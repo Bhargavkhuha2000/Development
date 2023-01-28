@@ -1,0 +1,49 @@
+<html>
+  <head>
+    <title>Set - 1</title>
+  </head>
+  <body>
+    <p>Let's build a simple poll app!</p>
+    <p>  A poll has a question, an array of options from which people can choose, and an
+      array with the number of replies for each option. This data is stored in the starter
+      'poll' object below.</p>
+
+    <p>  Your tasks:</p>
+
+    <p>  1. Create a method called 'registerNewAnswer' on the 'poll' object. The
+      method does 2 things:</p>
+    
+    <p>  1.1. Display a prompt window for the user to input the number of the
+      selected option. The prompt should look like this:</p>
+    <p>  What is your favourite programming language?</p>
+    <p>  0: JavaScript</p>
+    <p>  1: Python</p>
+    <p>  2: Rust</p>
+    <p>  3: C++</p>
+    <p> (Write option number)</p>  
+
+    <p>  1.2. Based on the input number, update the 'answers' array property. For
+      example, if the option is 3, increase the value at position 3 of the array by</p>
+
+      <p>  1. Make sure to check if the input is a number and if the number makes
+      sense (e.g. answer 52 wouldn't make sense, right?)</p>
+
+      <p>  2. Call this method whenever the user clicks the "Answer poll" button.</p>
+
+    <p>  3. Create a method 'displayResults' which displays the poll results. The
+      method takes a string as an input (called 'type'), which can be either 'string'
+      or 'array'. If type is 'array', simply display the results array as it is, using
+      console.log(). This should be the default option. If type is 'string', display a
+      string like "Poll results are 13, 2, 4, 1".</p>
+
+      <p>  4. Run the 'displayResults' method at the end of each
+      'registerNewAnswer' method call.</p>
+
+    <p>  5. Bonus: Use the 'displayResults' method to display the 2 arrays in the test
+      data. Use both the 'array' and the 'string' option. Do not put the arrays in the poll
+      object! So what should the this keyword look like in this situation?
+      The Complete JavaScript Course 21</p>
+    <p>  <button class="btn">Answer</button>
+      <script src="script.js"></script>
+    </body>
+    </html>
