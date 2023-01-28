@@ -22,6 +22,7 @@ Test data:
 Hints: Use tools from all lectures in this section so far �*/
 
 const checkDogs = function(dogsJulia , dogsKate){
+  
   dogsJulia.splice(0,1);
   dogsJulia.splice(-2);
   console.log(dogsJulia);
