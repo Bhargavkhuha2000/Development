@@ -76,16 +76,20 @@ const createImage=function(imgPath){
 
 let currentImg;
 
-createImage('dice_1.png').then(img=>{
+createImage('dice_1.png')
+.then(img=>{
   currentImg = img;
   console.log('Image 1 loaded');
   return wait(2);
-}).then(()=>{
+})
+.then(()=>{
   currentImg.style.display='none';
   return createImage('dice_2.png');
 })
+
 .then(img=>{currentImg = img;
   console.log('Image 2 loaded');
   return wait(2);
-}).then(()=> currentImg.style.display='none')
+})
+.then(()=> currentImg.style.display='none')
 .catch(err=>console.log(err));
