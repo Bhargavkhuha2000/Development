@@ -25,20 +25,21 @@ const gameEvents = new Map([
   [76, 'GOAL'],
   [80, 'GOAL'],
   [92, 'Yellow card'],
-  ]);
+]);
 
+const events = [...new Set(gameEvents.values())];
+console.log(events);
 
-  const events = [...new Set(gameEvents.values())];
-  console.log(events);
+gameEvents.delete(64);
 
-  gameEvents.delete(64);
+const time = [...gameEvents.keys()].pop();
+console.log(time);
 
-  const time = [...gameEvents.keys()].pop();
-  console.log(time);
+console.log(
+  `An event happend,on average, every ${time / gameEvents.size} minutes`
+);
 
-  console.log(`An event happend,on average, every ${time/gameEvents.size} minutes`);
-
-  for(const [key , value] of gameEvents){
-    const half = key<=45 ? "First" : "Second";
-    console.log(`[${half} half] ${key} : ${value}`);
-  }
+for (const [key, value] of gameEvents) {
+  const half = key <= 45 ? 'First' : 'Second';
+  console.log(`[${half} half] ${key} : ${value}`);
+}

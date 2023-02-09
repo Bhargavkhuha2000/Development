@@ -32,12 +32,12 @@ Test data:
 § Coordinates 1: 52.508, 13.381 (Latitude, Longitude)
 § Coordinates 2: 19.037, 72.873
 § Coordinates 3: -33.933, 18.474*/
-'use strict'
+'use strict';
 
-const btn=document.querySelector('.btn');
+const btn = document.querySelector('.btn');
 const countriescontainer = document.querySelector('.countries');
-const renderData = function(data){
-const html=`
+const renderData = function (data) {
+  const html = `
   <img src="${data.flag}" class="img" height="150" width="200"><br>
         
   <h3>Name</h3>
@@ -45,29 +45,34 @@ const html=`
   <h3>Region</h3>
   <p class="region">${data.region}</p>
   <h3>Population</h3>
-  <p class="pop">${(+data.population/1000000).toFixed(1)}</p>
+  <p class="pop">${(+data.population / 1000000).toFixed(1)}</p>
   <h3>Language</h3>
   <p class="lag">${data.languages[0].name}</p>
   <h3>Currencies</h3>
   <p class="cur">${data.currencies[0].name}</p>`;
 
-  countriescontainer.insertAdjacentHTML('beforeend',html);
-}
+  countriescontainer.insertAdjacentHTML('beforeend', html);
+};
 
-const whereAmI = function(lat,lng){
-  fetch(`https://geocode.xyz/${lat},${lng}?geoit=json`).then(er=>{
-  console.log(er);
-  if(!er.ok) throw new Error(`Error is ${er.status}`);
-  return er.json()
-}).then(data=> {
-    console.log(data);
-    console.log(`you are in ${data.city},${data.country}`);
-    return fetch(`https://restcountries.com/v2/name/${data.country}`)
-  }).then(Response=>{
-    if(!Response.ok) throw new Error(`country not fount (${Response.status})`);
-    return Response.json();
-  }).then(data=>renderData(data[0]))
-  .catch(err=>console.log(`${err.message}`));
+const whereAmI = function (lat, lng) {
+  fetch(`https://geocode.xyz/${lat},${lng}?geoit=json`)
+    .then((er) => {
+      console.log(er);
+      if (!er.ok) throw new Error(`Error is ${er.status}`);
+      return er.json();
+    })
+    .then((data) => {
+      console.log(data);
+      console.log(`you are in ${data.city},${data.country}`);
+      return fetch(`https://restcountries.com/v2/name/${data.country}`);
+    })
+    .then((Response) => {
+      if (!Response.ok)
+        throw new Error(`country not fount (${Response.status})`);
+      return Response.json();
+    })
+    .then((data) => renderData(data[0]))
+    .catch((err) => console.log(`${err.message}`));
 };
 whereAmI(52.508, 13.381);
 whereAmI(19.037, 72.873);
