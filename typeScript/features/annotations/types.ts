@@ -1,5 +1,5 @@
 const today = new Date();
-today.getMonth();
+console.log(today.getFullYear());
 
 const person = {
   age: 20,
