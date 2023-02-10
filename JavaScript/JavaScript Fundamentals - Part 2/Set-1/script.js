@@ -15,9 +15,10 @@ function avg(avgDolphins, avgKoalas) {
 avg(DolphinsScore, KoalasScore);
 
 if (Dolphinsavg > Koalasavg * 2) {
-  console.log("Dolphins is win ");
+  console.log('Dolphins is win ');
 } else if (Koalasavg > Dolphinsavg * 2) {
-  console.log("Koalas is win");
+  console.log('Koalas is win');
 } else {
-  console.log("No one is win the match");
+  console.log('No one is win the match');
 }
+

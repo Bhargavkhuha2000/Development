@@ -15,3 +15,4 @@ const carStats = {
   horsepower: 400,
   weight: 3354,
 };
+console.log(pepsi);

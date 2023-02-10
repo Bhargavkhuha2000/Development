@@ -1,8 +1,7 @@
+import { UserForm } from './views/UserForm';
 import { User } from './models/User';
 
-const user = new User({ name: 'abc', age: 20 });
+const user = User.buildUser({ name: 'NAME', age: 20 });
+const userForm = new UserForm(document.querySelector('#roots'), user);
 
-user.set({ name: 'bk', age: 23 });
-
-console.log(user.get('name'));
-console.log(user.get('age'));
+userForm.render();
