@@ -7,14 +7,14 @@ string like the above to the console. Try it with both test datasets.
 2. Use the problem-solving framework: Understand the problem and break it up
 into sub-problems!*/
 
-const data = [17,21,23];
-const printForecast = function(arr){
-  let str;  
-  for(let i = 0;i<arr.length;i++){
-      str = '';
-      str = str +`${arr[i]}ºC`;
-      console.log(`...${str} in ${i+1} Days`);
-    }
-}
+const data = [17, 21, 23];
+const printForecast = function (arr) {
+  let str;
+  for (let i = 0; i < arr.length; i++) {
+    str = '';
+    str = `${arr[i]}ºC`;
+    console.log(`...${str} in ${i + 1} Days`);
+  }
+};
 
 printForecast(data);

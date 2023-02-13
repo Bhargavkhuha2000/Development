@@ -23,22 +23,22 @@ const createImage = function (imgPath) {
   });
 };
 
-const loadPause = async function () {
-  try {
-    let img = await createImage('dice_1.png');
-    console.log('Image 1 is found');
-    await wait(2);
-    img.style.display = 'none';
+// const loadPause = async function () {
+//   try {
+//     let img = await createImage('dice_1.png');
+//     console.log('Image 1 is found');
+//     await wait(2);
+//     img.style.display = 'none';
 
-    img = await createImage('dice_2.png');
-    console.log('Image 2 is found');
-    await wait(2);
-    img.style.display = 'none';
-  } catch (err) {
-    console.error(err);
-  }
-};
-loadPause();
+//     img = await createImage('dice_2.png');
+//     console.log('Image 2 is found');
+//     await wait(2);
+//     img.style.display = 'none';
+//   } catch (err) {
+//     console.error(err);
+//   }
+// };
+// loadPause();
 
 const loadAll = async function (imgArr) {
   try {

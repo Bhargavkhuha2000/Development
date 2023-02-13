@@ -33,23 +33,30 @@ Test data for bonus:
 Hints: Use many of the tools you learned about in this and the last section �*/
 
 const poll = {
-  question: "What is your favourite programming language?",
-  options: ["0: JavaScript", "1: Python", "2: Rust", "3:C++"],
+  question: 'What is your favourite programming language?',
+  options: ['0: JavaScript', '1: Python', '2: Rust', '3:C++'],
   // This generates [0, 0, 0, 0]. More in the next section!
   answers: new Array(4).fill(0),
-  registerNewAnswer(){
-      const answer = Number(prompt(`${this.question}\n${this.options.join('\n')}\n (Write option number)`));
-      if(typeof answer === 'number' && answer>=0 && answer<this.options.length)
-      {
-        this.answers[answer]++;
-        console.log(this.answers);
-        console.log(`poll result is : ${this.answers.join(', ')}`);
-      }
-      else
-      {
-        console.log('please enter number between 0 to 3 ');
-      }
-  }
-  };
+  registerNewAnswer() {
+    const answer = Number(
+      prompt(
+        `${this.question}\n${this.options.join('\n')}\n (Write option number)`
+      )
+    );
+    if (
+      typeof answer === 'number' &&
+      answer >= 0 &&
+      answer < this.options.length
+    ) {
+      this.answers[answer]++;
+      console.log(this.answers);
+      console.log(`poll result is : ${this.answers.join(', ')}`);
+    } else {
+      console.log('please enter number between 0 to 3 ');
+    }
+  },
+};
 // const polls = poll.registerNewAnswer();
-document.querySelector('.btn').addEventListener('click',poll.registerNewAnswer.bind(poll));
+document
+  .querySelector('.btn')
+  .addEventListener('click', poll.registerNewAnswer.bind(poll));
