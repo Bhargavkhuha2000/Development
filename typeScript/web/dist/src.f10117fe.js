@@ -142,21 +142,38 @@ var UserForm = /*#__PURE__*/function () {
     _classCallCheck(this, UserForm);
     this.parent = parent;
     this.model = model;
+    this.onSetNameClick = function () {
+      var input = _this.parent.querySelector('input');
+      var name = input.value;
+      _this.model.set({
+        name: name
+      });
+    };
     this.onSetAgeClick = function () {
       _this.model.setRandomAge();
     };
+    this.bindModel();
   }
   _createClass(UserForm, [{
+    key: "bindModel",
+    value: function bindModel() {
+      var _this2 = this;
+      this.model.on('change', function () {
+        _this2.render();
+      });
+    }
+  }, {
     key: "eventMap",
     value: function eventMap() {
       return {
-        'click:.set-age': this.onSetAgeClick
+        'click:.set-age': this.onSetAgeClick,
+        'click:.set-name': this.onSetNameClick
       };
     }
   }, {
     key: "template",
     value: function template() {
-      return "\n    <div>\n        <h1>User Form</h1>\n        <div>User Name:".concat(this.model.get('name'), "</div>\n        <div>User Age:").concat(this.model.get('age'), "</div>\n        <input />\n        <button>Click me</button>\n        <button class=\"set-age\">Set Random Age</button>\n    </div>\n    ");
+      return "\n    <div>\n        <h1>User Form</h1>\n        <div>User Name:".concat(this.model.get('name'), "</div>\n        <div>User Age:").concat(this.model.get('age'), "</div>\n        <input />\n        <button class=\"set-name\">save</button>\n        <button class=\"set-age\">Set Random Age</button>\n    </div>\n    ");
     }
   }, {
     key: "bindEvents",
@@ -178,6 +195,7 @@ var UserForm = /*#__PURE__*/function () {
   }, {
     key: "render",
     value: function render() {
+      this.parent.innerHTML = '';
       var templateElement = document.createElement('template');
       templateElement.innerHTML = this.template();
       this.bindEvents(templateElement.content);
@@ -5780,7 +5798,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "33763" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "39791" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

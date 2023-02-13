@@ -32,7 +32,9 @@ console.log(events);
 
 gameEvents.delete(64);
 
-const time = [...gameEvents.keys()].pop();
+const ky = [...gameEvents.keys()];
+const len = ky.length - 1;
+const time = ky[len];
 console.log(time);
 
 console.log(
