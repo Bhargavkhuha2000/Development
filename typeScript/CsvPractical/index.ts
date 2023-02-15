@@ -1,5 +1,6 @@
 import fs from 'fs';
 
+const name = 'bhargav';
 //file 1 data fetch
 const data1: string[][] = fs
   .readFileSync('file1.csv', {
