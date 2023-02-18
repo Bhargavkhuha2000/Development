@@ -27,28 +27,56 @@
 import fs from 'fs';
 // let fs = require('fs');
 
-const data1 = JSON.parse(
-  fs.readFileSync('./file1.json', { encoding: 'utf-8' })
-);
-const Data1Collection:Array<{id:number,name:string}> = data1.Data1;
+// const data1 = JSON.parse(
+//   fs.readFileSync('./file1.json', { encoding: 'utf-8' })
+// );
+// const Data1Collection:Array<{id:number,name:string}> = data1.Data1;
 
-const data2 = JSON.parse(
-  fs.readFileSync('./file2.json', { encoding: 'utf-8' })
-);
-const Data2Collection:Array<{id:number,name:string}> = data2.Data2;
+// const data2 = JSON.parse(
+//   fs.readFileSync('./file2.json', { encoding: 'utf-8' })
+// );
+// const Data2Collection:Array<{id:number,name:string}> = data2.Data2;
 
-for (let i = 0; i < Data1Collection.length; i++) {
-  let isFound:boolean = false;
-  for (let j = 0; j < Data2Collection.length; j++) {
-    if (Data1Collection[i].id === Data2Collection[j].id) {
-      isFound = true;
-      break;
+// for (let i = 0; i < Data1Collection.length; i++) {
+//   let isFound:boolean = false;
+//   for (let j = 0; j < Data2Collection.length; j++) {
+//     if (Data1Collection[i].id === Data2Collection[j].id) {
+//       isFound = true;
+//       break;
+//     }
+//   }
+//   if (isFound === false) {
+//     console.log(Data1Collection[i]);
+//   }
+// }
+
+//Third way to compare two json file
+const reader1 = fs.createReadStream('./file1.json', {
+  encoding: 'utf-8',
+});
+
+reader1.on('data', function (chunk) {
+  const data1 = JSON.parse(chunk.toString());
+  const d1: Array<{ id: number; name: string }> = data1.Data1;
+  const reader2 = fs.createReadStream('./file2.json', {
+    encoding: 'utf-8',
+  });
+  reader2.on('data', function (chunk) {
+    const data2 = JSON.parse(chunk.toString());
+    const d2: Array<{ id: number; name: string }> = data2.Data2;
+    // console.log(d1, d2);
+    for (let i = 0; i < d1.length; i++) {
+      let isFound: boolean = false;
+      for (let j = 0; j < d2.length; j++) {
+        if (d1[i].id === d2[j].id) {
+          isFound = true;
+          break;
+        }
+      }
+      if (isFound === false) {
+        console.log(d1[i]);
+      }
     }
-  }
-  if (isFound === false) {
-    console.log(Data1Collection[i]);
-  }
-}
-
-
+  });
+});
 
