@@ -1,28 +1,28 @@
 //First way to compare two json file
-// import axios from 'axios';
+import axios from 'axios';
 
-// async function main() {
-//   const data1Object = await axios.get('http://localhost:3000/Data1');
-//   const data1: Array<{ id: number; name: string }> = data1Object.data;
-//   const data2Object = await axios.get('http://localhost:4000/Data2');
-//   const data2: Array<{ id: number; name: string }> = data2Object.data;
-//   console.log(data1);
-//   console.log(data2);
-//   for (let i = 0; i < data1.length; i++) {
-//     let isFound = false;
-//     for (let j = 0; j < data2.length; j++) {
-//       if (data1[i].id === data2[j].id) {
-//         isFound = true;
-//         break;
-//       }
-//     }
-//     if (isFound === false) {
-//       console.log(data1[i]);
-//     }
-//   }
-// }
+async function main() {
+  const data1Object = await axios.get('http://localhost:3000/Data1');
+  const data1: Array<{ id: number; name: string }> = data1Object.data;
+  const data2Object = await axios.get('http://localhost:4000/Data2');
+  const data2: Array<{ id: number; name: string }> = data2Object.data;
+  console.log(data1);
+  console.log(data2);
+  for (let i = 0; i < data1.length; i++) {
+    let isFound = false;
+    for (let j = 0; j < data2.length; j++) {
+      if (data1[i].id === data2[j].id) {
+        isFound = true;
+        break;
+      }
+    }
+    if (isFound === false) {
+      console.log(data1[i]);
+    }
+  }
+}
 
-// main();
+main();
 //second way to compare two json file
 import fs from 'fs';
 // let fs = require('fs');
@@ -51,32 +51,31 @@ import fs from 'fs';
 // }
 
 //Third way to compare two json file
-const reader1 = fs.createReadStream('./file1.json', {
-  encoding: 'utf-8',
-});
+// const reader1 = fs.createReadStream('./file1.json', {
+//   encoding: 'utf-8',
+// });
 
-reader1.on('data', function (chunk) {
-  const data1 = JSON.parse(chunk.toString());
-  const d1: Array<{ id: number; name: string }> = data1.Data1;
-  const reader2 = fs.createReadStream('./file2.json', {
-    encoding: 'utf-8',
-  });
-  reader2.on('data', function (chunk) {
-    const data2 = JSON.parse(chunk.toString());
-    const d2: Array<{ id: number; name: string }> = data2.Data2;
-    // console.log(d1, d2);
-    for (let i = 0; i < d1.length; i++) {
-      let isFound: boolean = false;
-      for (let j = 0; j < d2.length; j++) {
-        if (d1[i].id === d2[j].id) {
-          isFound = true;
-          break;
-        }
-      }
-      if (isFound === false) {
-        console.log(d1[i]);
-      }
-    }
-  });
-});
-
+// reader1.on('data', function (chunk) {
+//   const data1 = JSON.parse(chunk.toString());
+//   const d1: Array<{ id: number; name: string }> = data1.Data1;
+//   const reader2 = fs.createReadStream('./file2.json', {
+//     encoding: 'utf-8',
+//   });
+//   reader2.on('data', function (chunk) {
+//     const data2 = JSON.parse(chunk.toString());
+//     const d2: Array<{ id: number; name: string }> = data2.Data2;
+//     // console.log(d1, d2);
+//     for (let i = 0; i < d1.length; i++) {
+//       let isFound: boolean = false;
+//       for (let j = 0; j < d2.length; j++) {
+//         if (d1[i].id === d2[j].id) {
+//           isFound = true;
+//           break;
+//         }
+//       }
+//       if (isFound === false) {
+//         console.log(d1[i]);
+//       }
+//     }
+//   });
+// });

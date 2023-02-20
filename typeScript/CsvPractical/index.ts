@@ -10,6 +10,7 @@ const data1: string[][] = fs
   .map((row: string): string[] => {
     return row.split(',');
   });
+console.log(data1);
 
 //file 2 data fetch
 const data2: string[][] = fs
