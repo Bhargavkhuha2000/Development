@@ -1,15 +1,18 @@
 import logo from './logo.svg';
 import './App.css';
-import { useState } from 'react';
-import UserList from './component/UserList';
+import React, { useState } from 'react';
 import AddUser from './component/AddUser';
+import UserList from './component/UserList';
 
-function App(props) {
+function App() {
   const [userList, setUserList] = useState([]);
-
   const listHandler = (eName, eAge) => {
     setUserList((previeseData) => {
-      return [...previeseData, { name: eName, age: eAge }];
+      console.log(previeseData.length + 1);
+      return [
+        ...previeseData,
+        { id: +previeseData.length + 1, name: eName, age: eAge },
+      ];
     });
   };
 
