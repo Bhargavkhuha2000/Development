@@ -9,17 +9,18 @@ function App() {
   const listHandler = (eName, eAge) => {
     setUserList((previeseData) => {
       console.log(previeseData.length + 1);
-      return [
-        ...previeseData,
-        { id: +previeseData.length + 1, name: eName, age: eAge },
-      ];
+      const store = { id: +previeseData.length + 1, name: eName, age: eAge };
+      setUserList(userList.push(store));
+      console.log([...userList]);
+      return [...userList];
     });
   };
+  // console.log(userList);
 
   return (
     <div>
       <AddUser onAddUser={listHandler} />
-      <UserList users={userList} />
+      <UserList users={userList} Print={setUserList} />
     </div>
   );
 }
