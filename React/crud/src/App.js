@@ -1,31 +1,42 @@
+import React, { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import React, { ReactDOM, useState } from 'react';
-import AddData from './component/AddData';
-import DataList from './component/DataList';
-import UpdateData from './component/UpdateData';
+import Form from './component/Form';
+import DatasList from './component/DatasList';
+
 function App() {
-  const [userData, setUserData] = useState([]);
-  const listHandler = (fname, lname, add, gen) => {
-    setUserData((DataPass) => {
-      console.log(DataPass.length + 1);
-      const store = {
-        id: +DataPass.length + 1,
-        Fname: fname,
-        Lname: lname,
-        address: add,
-        gender: gen,
-      };
-      setUserData(userData.push(store));
-      console.log([...userData]);
-      return [...userData];
-    });
-  };
-  // console.log(props.onUpdatedData);
+  const [FnameInput, setFnameInput] = useState('');
+  const [LnameInput, setLnameInput] = useState('');
+  const [AddressInput, setAddressInput] = useState('');
+  const [GenderInput, setGenderInput] = useState('');
+  const [datas, setDatas] = useState('');
+  const [updateData, setUpdateData] = useState(null);
+  // console.log([...datas]);
   return (
-    <div className="App">
-      <AddData onAddData={listHandler} forRepeatData={userData} />
-      <DataList data={userData} setData={setUserData} />
+    <div>
+      <div className="App">
+        <Form
+          FnameInput={FnameInput}
+          setFnameInput={setFnameInput}
+          LnameInput={LnameInput}
+          setLnameInput={setLnameInput}
+          AddressInput={AddressInput}
+          setAddressInput={setAddressInput}
+          GenderInput={GenderInput}
+          setGenderInput={setGenderInput}
+          datas={datas}
+          setDatas={setDatas}
+          updateData={updateData}
+          setUpdateData={setUpdateData}
+        />
+      </div>
+      <div>
+        <DatasList
+          datas={datas}
+          setDatas={setDatas}
+          setUpdateData={setUpdateData}
+        />
+      </div>
     </div>
   );
 }
