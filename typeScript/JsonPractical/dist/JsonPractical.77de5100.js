@@ -5446,46 +5446,47 @@ function main() {
           return axios_1.default.get('http://localhost:3000/Data1');
         case 2:
           data1Object = _context.sent;
+          console.log(data1Object);
           data1 = data1Object.data;
-          _context.next = 6;
+          _context.next = 7;
           return axios_1.default.get('http://localhost:4000/Data2');
-        case 6:
+        case 7:
           data2Object = _context.sent;
           data2 = data2Object.data;
           console.log(data1);
           console.log(data2);
           i = 0;
-        case 11:
+        case 12:
           if (!(i < data1.length)) {
-            _context.next = 25;
+            _context.next = 26;
             break;
           }
           isFound = false;
           j = 0;
-        case 14:
+        case 15:
           if (!(j < data2.length)) {
-            _context.next = 21;
+            _context.next = 22;
             break;
           }
           if (!(data1[i].id === data2[j].id)) {
-            _context.next = 18;
+            _context.next = 19;
             break;
           }
           isFound = true;
-          return _context.abrupt("break", 21);
-        case 18:
+          return _context.abrupt("break", 22);
+        case 19:
           j++;
-          _context.next = 14;
+          _context.next = 15;
           break;
-        case 21:
+        case 22:
           if (isFound === false) {
             console.log(data1[i]);
           }
-        case 22:
+        case 23:
           i++;
-          _context.next = 11;
+          _context.next = 12;
           break;
-        case 25:
+        case 26:
         case "end":
           return _context.stop();
       }
@@ -5567,7 +5568,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "35069" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "35699" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

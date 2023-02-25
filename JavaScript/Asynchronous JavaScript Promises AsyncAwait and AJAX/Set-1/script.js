@@ -57,7 +57,7 @@ const renderData = function (data) {
 const whereAmI = function (lat, lng) {
   fetch(`https://geocode.xyz/${lat},${lng}?geoit=json`)
     .then((er) => {
-      console.log(er);
+      // console.log(er);
       if (!er.ok) throw new Error(`Error is ${er.status}`);
       return er.json();
     })

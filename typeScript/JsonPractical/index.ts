@@ -3,6 +3,8 @@ import axios from 'axios';
 
 async function main() {
   const data1Object = await axios.get('http://localhost:3000/Data1');
+  console.log(data1Object);
+
   const data1: Array<{ id: number; name: string }> = data1Object.data;
   const data2Object = await axios.get('http://localhost:4000/Data2');
   const data2: Array<{ id: number; name: string }> = data2Object.data;
