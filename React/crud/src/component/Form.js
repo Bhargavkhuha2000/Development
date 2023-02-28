@@ -1,28 +1,27 @@
 import React, { useState, useEffect } from 'react';
 
-const Form = ({
-  FnameInput,
-  setFnameInput,
-  LnameInput,
-  setLnameInput,
-  AddressInput,
-  setAddressInput,
-  GenderInput,
-  setGenderInput,
-  datas,
-  setDatas,
-  updateData,
-  setUpdateData,
-}) => {
+const Form = (props) => {
+  const { datas, setDatas, updateData, setUpdateData } = props;
+
   const [check, setCheck] = useState(true);
   const [msg, setmsg] = useState('');
+  const [ifChecked, setIfChecked] = useState(false);
+
+  const [FnameInput, setFnameInput] = useState('');
+  const [LnameInput, setLnameInput] = useState('');
+  const [AddressInput, setAddressInput] = useState('');
+  const [GenderInput, setGenderInput] = useState('');
+
   const selectHandler = (event) => {
     setGenderInput(event.target.value);
   };
-  const chackHandle = () => {
-    setCheck(!check);
+
+  const chackHandle = (event) => {
+    setCheck(!event.target.checked);
+    setIfChecked(true);
     console.log(`Button is Checked : ${check}`);
   };
+
   const updateNewData = (
     id,
     FnameInput,
@@ -30,13 +29,19 @@ const Form = ({
     AddressInput,
     GenderInput
   ) => {
-    const newData = datas.map((d) =>
-      +d.id === +id
-        ? { id, FnameInput, LnameInput, AddressInput, GenderInput }
-        : d
+    setDatas(
+      datas.map((d) =>
+        +d.id === +id
+          ? {
+              id: id,
+              fname: FnameInput,
+              lname: LnameInput,
+              address: AddressInput,
+              gender: GenderInput,
+            }
+          : d
+      )
     );
-    console.log([...newData]);
-    setDatas([...newData]);
     setUpdateData('');
   };
 
@@ -48,11 +53,15 @@ const Form = ({
         LnameInput.trim().length === 0 ||
         AddressInput.trim().length === 0
       ) {
+        console.log('*Please Enter Value');
         return setmsg('*Please Enter Value');
       } else if (GenderInput === '') {
+        console.log('*Select Gender');
         return setmsg('*Select Gender');
       }
+
       let isFound = false;
+
       for (let i = 0; i < datas.length; i++) {
         if (
           datas[i].fname === FnameInput ||
@@ -60,10 +69,10 @@ const Form = ({
           datas[i].address === AddressInput
         ) {
           isFound = true;
-          setmsg('*Data Already Inserted');
-          break;
+          return setmsg('*Data Already Inserted');
         }
       }
+
       if (isFound === false) {
         setDatas([
           ...datas,
@@ -75,12 +84,6 @@ const Form = ({
             gender: GenderInput,
           },
         ]);
-        setFnameInput('');
-        setLnameInput('');
-        setAddressInput('');
-        setGenderInput('');
-        setCheck(!check.checked);
-        setmsg('');
       }
     } else {
       updateNewData(
@@ -91,10 +94,19 @@ const Form = ({
         GenderInput
       );
     }
+
+    setFnameInput('');
+    setLnameInput('');
+    setAddressInput('');
+    setGenderInput('');
+    setCheck(event.target.checked);
+    setIfChecked(false);
+    setmsg('');
   };
+
   useEffect(() => {
     if (updateData) {
-      console.log(updateData.fname);
+      // console.log(updateData.fname);
       setFnameInput(updateData.fname);
       setLnameInput(updateData.lname);
       setAddressInput(updateData.address);
@@ -114,9 +126,12 @@ const Form = ({
     // setDatas,
     updateData,
   ]);
+
   return (
     <div>
-      <h2 align="center">Insert Data</h2>
+      <h1 align="center" style={{ color: 'white' }}>
+        Insert Data
+      </h1>
       <form onSubmit={onFormSubmit}>
         <table border="1" align="center">
           <tr>
@@ -166,7 +181,12 @@ const Form = ({
           </tr>
           <tr>
             <td colSpan="2">
-              <input type="checkbox" value={check} onChange={chackHandle} />
+              <input
+                type="checkbox"
+                value={check}
+                checked={ifChecked}
+                onChange={chackHandle}
+              />
               Accept Term and Condition...
             </td>
           </tr>
@@ -176,7 +196,7 @@ const Form = ({
                 type="submit"
                 name="btn"
                 value="submit"
-                disabled={check}
+                disabled={!ifChecked}
                 // onClick={onFormSubmit}
               >
                 {updateData ? 'Update' : 'Add'}

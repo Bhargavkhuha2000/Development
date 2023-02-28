@@ -1,20 +1,23 @@
 import React, { ReactDOM } from 'react';
 
 const DatasList = (props) => {
-  //   console.log([...props.datas]);
+  const { setDatas, datas, setUpdateData } = props;
+
   const handleDelete = (ids) => {
-    props.setDatas(props.datas.filter((data) => data.id !== +ids));
+    setDatas(datas.filter((data) => data.id !== +ids));
   };
+
   const handleUpdate = (ids) => {
-    const Update = props.datas.find((data) => data.id === ids);
-    props.setUpdateData(Update);
+    setUpdateData(datas.find((data) => data.id === ids));
   };
-  console.log([...props.datas]);
+
   return (
     <div>
-      <h2 align="center">Show Data</h2>
-      <table align="center" border="1">
-        <tr>
+      <h1 align="center" style={{ color: 'white' }}>
+        Show Data
+      </h1>
+      <table align="center" border="10">
+        <tr style={{ color: 'rgb(127, 46, 199)' }}>
           <th>First Name</th>
           <th>Last Name</th>
           <th>Address</th>
@@ -22,8 +25,8 @@ const DatasList = (props) => {
           <th>Delete</th>
           <th>Update</th>
         </tr>
-        {[...props.datas].map((d) => (
-          <tr>
+        {[...datas].map((d) => (
+          <tr style={{ color: 'white' }}>
             <td>{d.fname}</td>
             <td>{d.lname}</td>
             <td>{d.address}</td>
