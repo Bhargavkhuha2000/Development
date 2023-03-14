@@ -10,6 +10,7 @@ function App() {
   const [buttonAddBlogPopUp, setbuttonAddBlogPopUp] = useState(false);
   const [buttonShowBlogPopUp, setbuttonShowBlogPopUp] = useState(false);
   const [blogList, setBlogList] = useState([]);
+  const [updateBlog, setUpdateBlog] = useState(null);
   return (
     <div>
       <div>
@@ -39,6 +40,8 @@ function App() {
               setbuttonAddBlogPopUp={setbuttonAddBlogPopUp}
               blogList={blogList}
               setBlogList={setBlogList}
+              updateBlog={updateBlog}
+              setUpdateBlog={setUpdateBlog}
             />
           }
         />
@@ -50,6 +53,8 @@ function App() {
               buttonShowBlogPopUp={buttonShowBlogPopUp}
               setbuttonShowBlogPopUp={setbuttonShowBlogPopUp}
               setBlogList={setBlogList}
+              updateBlog={updateBlog}
+              setUpdateBlog={setUpdateBlog}
             />
           }
         />
