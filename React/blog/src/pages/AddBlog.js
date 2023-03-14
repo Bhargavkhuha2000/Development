@@ -1,11 +1,16 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import JoditEditor from 'jodit-react';
 import { Modal, ModalBody, ModalHeader, Row, Col } from 'reactstrap';
-const { convert } = require('html-to-text');
 
 const AddBlog = (props) => {
-  const { buttonAddBlogPopUp, setbuttonAddBlogPopUp, blogList, setBlogList } =
-    props;
+  const {
+    buttonAddBlogPopUp,
+    setbuttonAddBlogPopUp,
+    blogList,
+    setBlogList,
+    updateBlog,
+    setUpdateBlog,
+  } = props;
   const editor = useRef(null);
   const [contextValue, setContextVelue] = useState('');
   const [cmpName, setcmpName] = useState('');
@@ -14,28 +19,64 @@ const AddBlog = (props) => {
   const [title, settitle] = useState('');
   const [publishDate, setpublishDate] = useState('');
   const [category, setcategory] = useState('');
-  //Image state is padding
-  // const contentHandler = (event) => {
-  //   setContextVelue(
-  //     (document.createElement('div').innerHTML = event.target.value)
-  //   );
-  // };
+  const [file, setfile] = useState('');
+
+  function updateNewData(id, cName, bName, RCmp, title, date, Con, Imgs, Cat) {
+    setBlogList(
+      ...blogList.map((d) =>
+        +d.id === +id
+          ? {
+              id: +id,
+              companyName: cName,
+              BloggerName: bName,
+              RollCompany: RCmp,
+              Title: title,
+              PublishDate: date,
+              Content: Con,
+              Images: Imgs,
+              Category: Cat,
+            }
+          : d
+      )
+    );
+    setUpdateBlog('');
+  }
+
+  const fileHandler = (e) => {
+    console.log(e.target.files);
+    setfile(URL.createObjectURL(e.target.files[0]));
+  };
+
   const submitHandler = (event) => {
     event.preventDefault();
-    // setContextVelue((document.createElement('p').innerHTML = contextValue));
-    setBlogList([
-      ...blogList,
-      {
-        id: blogList.length + 1,
-        companyName: cmpName,
-        BloggerName: blgName,
-        RollCompany: rollCmp,
-        Title: title,
-        PublishDate: publishDate,
-        Content: (document.createElement('p').innerHTML = contextValue),
-        Category: category,
-      },
-    ]);
+    if (!updateBlog) {
+      setBlogList([
+        ...blogList,
+        {
+          id: blogList.length + 1,
+          companyName: cmpName,
+          BloggerName: blgName,
+          RollCompany: rollCmp,
+          Title: title,
+          PublishDate: publishDate,
+          Content: contextValue,
+          Images: file,
+          Category: category,
+        },
+      ]);
+    } else {
+      updateNewData(
+        +updateBlog.id,
+        cmpName,
+        blgName,
+        rollCmp,
+        title,
+        publishDate,
+        contextValue,
+        file,
+        category
+      );
+    }
     setcmpName('');
     setblgName('');
     setrollCmp('');
@@ -45,6 +86,37 @@ const AddBlog = (props) => {
     setcategory('');
     console.log(blogList);
   };
+  // useEffect(() => {
+  //   if (updateBlog) {
+  //     // console.log(updateData.fname);
+  //     setcmpName(updateBlog.companyName);
+  //     setblgName(updateBlog.BloggerName);
+  //     setrollCmp(updateBlog.RollCompany);
+  //     settitle(updateBlog.Title);
+  //     setpublishDate(updateBlog.PublishDate);
+  //     setContextVelue(updateBlog.Content);
+  //     setfile(updateBlog.Images);
+  //     setcategory(updateBlog.Category);
+  //   } else {
+  //     setcmpName('');
+  //     setblgName('');
+  //     setrollCmp('');
+  //     settitle('');
+  //     setpublishDate('');
+  //     setContextVelue('');
+  //     setcategory('');
+  //   }
+  // }, [
+  //   setcmpName,
+  //   setblgName,
+  //   setrollCmp,
+  //   settitle,
+  //   setpublishDate,
+  //   setContextVelue,
+  //   setcategory,
+  //   setfile,
+  //   updateBlog,
+  // ]);
   return (
     <>
       <Modal
@@ -53,7 +125,9 @@ const AddBlog = (props) => {
         toggle={setbuttonAddBlogPopUp(!buttonAddBlogPopUp)}
       >
         <ModalHeader toggle={setbuttonAddBlogPopUp(buttonAddBlogPopUp)}>
-          <button onClick={() => setbuttonAddBlogPopUp(false)}>X</button>
+          <button align="right" onClick={() => setbuttonAddBlogPopUp(false)}>
+            X
+          </button>
         </ModalHeader>
         <ModalBody>
           <h1 align="center">Add Blog Page</h1>
@@ -146,7 +220,9 @@ const AddBlog = (props) => {
                         <JoditEditor
                           ref={editor}
                           value={contextValue}
-                          onChange={(content) => setContextVelue(content)}
+                          onChange={(content) => {
+                            setContextVelue(content);
+                          }}
                         />
                       </td>
                     </tr>
@@ -157,7 +233,7 @@ const AddBlog = (props) => {
                         </label>
                       </td>
                       <td>
-                        <input type="file" />
+                        <input type="file" onChange={fileHandler} />
                       </td>
                     </tr>
                     <tr>
@@ -176,7 +252,9 @@ const AddBlog = (props) => {
                     </tr>
                     <tr>
                       <td colSpan={2} align="right">
-                        <button onClick={submitHandler}>Add Blog</button>
+                        <button onClick={submitHandler}>
+                          {!updateBlog ? 'Add Blog' : 'Update Blog'}
+                        </button>
                       </td>
                     </tr>
                   </table>

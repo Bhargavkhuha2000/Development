@@ -1,43 +1,66 @@
 import React, { useState } from 'react';
-import { Modal, ModalBody, ModalHeader, Row, Col } from 'reactstrap';
+import { Modal, ModalBody, ModalHeader, Row, Col, NavLink } from 'reactstrap';
+import AddBlog from './AddBlog';
+import { Route, Routes } from 'react-router-dom';
 
 const ShowBlog = (props) => {
-  const { blogList, setbuttonShowBlogPopUp, buttonShowBlogPopUp, setBlogList } =
-    props;
+  const {
+    blogList,
+    setbuttonShowBlogPopUp,
+    buttonShowBlogPopUp,
+    setBlogList,
+    setUpdateBlog,
+    updateBlog,
+  } = props;
+
   const [idForNextPrev, setIdForNextPrev] = useState(0);
-  const [findNextPrevData, setFindNextPrevData] = useState(null);
-  const [msg, setmsg] = useState('');
   const [nextDisable, setNextDisable] = useState(false);
 
-  // const handleDelete = (ids, event) => {
-  //   event.preventDefault();
-  //   setBlogList(blogList.filter((data) => data.id !== +ids));
-  // };
+  //delete Handler
   const handleDelete = (event) => {
     event.preventDefault();
+
     const ids = blogList[idForNextPrev].id;
     console.log(ids);
     setBlogList(blogList.filter((list) => +list.id !== +ids));
+
+    if (idForNextPrev > 1) {
+      setIdForNextPrev(idForNextPrev - 1);
+    }
   };
 
+  //update handler
+  const handleUpdate = (event) => {
+    event.preventDefault();
+    const ids = blogList[idForNextPrev].id;
+    console.log(ids);
+    setUpdateBlog(blogList.find((data) => data.id === ids));
+  };
+  console.log(updateBlog);
+  //next blog handler
   const nextHandler = (event) => {
     event.preventDefault();
+
     if (idForNextPrev <= blogList.length) {
-      if (idForNextPrev === blogList.length - 2) {
+      if (idForNextPrev === blogList.length - 2 || blogList.length === 0) {
         setNextDisable(true);
       }
       setIdForNextPrev(idForNextPrev + 1);
+    } else if (blogList.length === 1) {
+      setNextDisable(true);
     }
   };
+
+  //prev blog handler
   const prevHandler = (event) => {
     event.preventDefault();
+
     if (idForNextPrev <= blogList.length && idForNextPrev > 0) {
       setIdForNextPrev(idForNextPrev - 1);
       setNextDisable(false);
     }
   };
 
-  // console.log(...blogList);
   return (
     <div>
       <Modal
@@ -51,28 +74,47 @@ const ShowBlog = (props) => {
         <ModalBody>
           <h1 align="center">Show Blog Page</h1>
           <form>
-            <div>
-              <h2 align="center">{blogList[idForNextPrev].Title}</h2>
-              <p align="right">{blogList[idForNextPrev].PublishDate}</p>
-              <img height="200" weigth="200"></img>
-              <p>{blogList[idForNextPrev].Content}</p>
-              <div align="right">
-                <p>- {blogList[idForNextPrev].BloggerName}</p>
-                <p>{blogList[idForNextPrev].companyName}</p>
-                <p>{blogList[idForNextPrev].RollCompany}</p>
-              </div>
-              <div align="center">
-                <button
-                  value={blogList[idForNextPrev].id}
-                  // onClick={() => handleDelete(+blogList[idForNextPrev].id)}
-                  onClick={handleDelete}
-                >
-                  Delete
-                </button>
-                <button value={blogList[idForNextPrev].id}>Update</button>
-              </div>
-            </div>
-            {/* ))} */}
+            <Row>
+              <Col>
+                <div>
+                  <h2 align="center">
+                    <i>
+                      <u>{blogList[idForNextPrev].Title}</u>
+                    </i>
+                  </h2>
+                  <p align="right">
+                    Pubmish Date : {blogList[idForNextPrev].PublishDate}
+                  </p>
+                  <img
+                    height="300"
+                    width="700"
+                    src={blogList[idForNextPrev].Images}
+                  ></img>
+                  <p>{blogList[idForNextPrev].Content}</p>
+                  <div align="right">
+                    <p>- {blogList[idForNextPrev].BloggerName}</p>
+                    <p>{blogList[idForNextPrev].companyName}</p>
+                    <p>{blogList[idForNextPrev].RollCompany}</p>
+                  </div>
+                  <div align="center">
+                    <button
+                      value={blogList[idForNextPrev].id}
+                      onClick={handleDelete}
+                    >
+                      Delete
+                    </button>
+                    <NavLink to="/AddBlog.js">
+                      <button
+                        value={blogList[idForNextPrev].id}
+                        onClick={handleUpdate}
+                      >
+                        Update
+                      </button>
+                    </NavLink>
+                  </div>
+                </div>
+              </Col>
+            </Row>
           </form>
           <div align="right">
             <button onClick={prevHandler}>PREV BLOG</button>
@@ -80,7 +122,6 @@ const ShowBlog = (props) => {
             <button onClick={nextHandler} disabled={nextDisable}>
               NEXT BLOG
             </button>
-            <p>{msg}</p>
           </div>
         </ModalBody>
       </Modal>
