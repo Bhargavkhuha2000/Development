@@ -21,26 +21,37 @@ const AddBlog = (props) => {
   const [category, setcategory] = useState('');
   const [file, setfile] = useState('');
 
-  function updateNewData(id, cName, bName, RCmp, title, date, Con, Imgs, Cat) {
+  const updateNewData = (
+    ids,
+    cmpName,
+    blgName,
+    rollCmp,
+    title,
+    publishDate,
+    contextValue,
+    file,
+    category
+  ) => {
     setBlogList(
-      ...blogList.map((d) =>
-        +d.id === +id
+      blogList.map((d) =>
+        +d.id === +ids
           ? {
-              id: +id,
-              companyName: cName,
-              BloggerName: bName,
-              RollCompany: RCmp,
+              id: +ids,
+              companyName: cmpName,
+              BloggerName: blgName,
+              RollCompany: rollCmp,
               Title: title,
-              PublishDate: date,
-              Content: Con,
-              Images: Imgs,
-              Category: Cat,
+              PublishDate: publishDate,
+              Content: contextValue,
+              Images: file,
+              Category: category,
             }
           : d
       )
     );
     setUpdateBlog('');
-  }
+  };
+  console.log(blogList);
 
   const fileHandler = (e) => {
     console.log(e.target.files);
@@ -53,13 +64,16 @@ const AddBlog = (props) => {
       setBlogList([
         ...blogList,
         {
-          id: blogList.length + 1,
+          id: blogList.length,
           companyName: cmpName,
           BloggerName: blgName,
           RollCompany: rollCmp,
           Title: title,
           PublishDate: publishDate,
-          Content: contextValue,
+          // Content: contextValue,
+          // Content: document
+          //   .getElementsByClassName('condata')
+          //   .innerHTML('beforeend', contextValue),
           Images: file,
           Category: category,
         },
@@ -86,37 +100,37 @@ const AddBlog = (props) => {
     setcategory('');
     console.log(blogList);
   };
-  // useEffect(() => {
-  //   if (updateBlog) {
-  //     // console.log(updateData.fname);
-  //     setcmpName(updateBlog.companyName);
-  //     setblgName(updateBlog.BloggerName);
-  //     setrollCmp(updateBlog.RollCompany);
-  //     settitle(updateBlog.Title);
-  //     setpublishDate(updateBlog.PublishDate);
-  //     setContextVelue(updateBlog.Content);
-  //     setfile(updateBlog.Images);
-  //     setcategory(updateBlog.Category);
-  //   } else {
-  //     setcmpName('');
-  //     setblgName('');
-  //     setrollCmp('');
-  //     settitle('');
-  //     setpublishDate('');
-  //     setContextVelue('');
-  //     setcategory('');
-  //   }
-  // }, [
-  //   setcmpName,
-  //   setblgName,
-  //   setrollCmp,
-  //   settitle,
-  //   setpublishDate,
-  //   setContextVelue,
-  //   setcategory,
-  //   setfile,
-  //   updateBlog,
-  // ]);
+  useEffect(() => {
+    if (updateBlog) {
+      // console.log(updateData.fname);
+      setcmpName(updateBlog.companyName);
+      setblgName(updateBlog.BloggerName);
+      setrollCmp(updateBlog.RollCompany);
+      settitle(updateBlog.Title);
+      setpublishDate(updateBlog.PublishDate);
+      setContextVelue(updateBlog.Content);
+      setfile(updateBlog.Images);
+      setcategory(updateBlog.Category);
+    } else {
+      setcmpName('');
+      setblgName('');
+      setrollCmp('');
+      settitle('');
+      setpublishDate('');
+      setContextVelue('');
+      setcategory('');
+    }
+  }, [
+    setcmpName,
+    setblgName,
+    setrollCmp,
+    settitle,
+    setpublishDate,
+    setContextVelue,
+    setcategory,
+    setfile,
+    updateBlog,
+  ]);
   return (
     <>
       <Modal
@@ -258,6 +272,7 @@ const AddBlog = (props) => {
                       </td>
                     </tr>
                   </table>
+                  <div className="condata"></div>
                 </div>
               </Col>
             </Row>

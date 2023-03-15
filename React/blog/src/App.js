@@ -13,24 +13,47 @@ function App() {
   const [updateBlog, setUpdateBlog] = useState(null);
   return (
     <div>
-      <div>
-        <ul>
-          <li>
-            <NavLink to="/AddBlog">
-              <button onClick={() => setbuttonAddBlogPopUp(true)}>
-                Add Blog
-              </button>
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/ShowBlog">
-              <button onClick={() => setbuttonShowBlogPopUp(true)}>
-                Show Blog
-              </button>
-            </NavLink>
-          </li>
-        </ul>
-      </div>
+      <nav class="navbar bg-body-tertiary">
+        <form class="container-fluid justify-content-start">
+          <NavLink to="/AddBlog">
+            <button
+              class="btn btn-outline-success me-2"
+              type="button"
+              onClick={() => setbuttonAddBlogPopUp(true)}
+            >
+              Add Blog
+            </button>
+          </NavLink>
+          <NavLink to="/ShowBlog">
+            <button
+              class="btn btn-outline-success me-2"
+              onClick={() => setbuttonShowBlogPopUp(true)}
+              type="button"
+            >
+              Show Blog
+            </button>
+          </NavLink>
+        </form>
+      </nav>
+      {/* <div align="center">
+        <NavLink to="/AddBlog">
+          <button
+            className="btn btn-outline-success"
+            onClick={() => setbuttonAddBlogPopUp(true)}
+          >
+            Add Blog
+          </button>
+        </NavLink>
+        <br />
+        <NavLink to="/ShowBlog">
+          <button
+            className="btn btn-outline-success"
+            onClick={() => setbuttonShowBlogPopUp(true)}
+          >
+            Show Blog
+          </button>
+        </NavLink>
+      </div> */}
       <Routes>
         <Route
           path="/addblog"
@@ -55,6 +78,7 @@ function App() {
               setBlogList={setBlogList}
               updateBlog={updateBlog}
               setUpdateBlog={setUpdateBlog}
+              setbuttonAddBlogPopUp={setbuttonAddBlogPopUp}
             />
           }
         />

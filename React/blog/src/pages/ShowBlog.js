@@ -11,6 +11,7 @@ const ShowBlog = (props) => {
     setBlogList,
     setUpdateBlog,
     updateBlog,
+    setbuttonAddBlogPopUp,
   } = props;
 
   const [idForNextPrev, setIdForNextPrev] = useState(0);
@@ -23,32 +24,33 @@ const ShowBlog = (props) => {
     const ids = blogList[idForNextPrev].id;
     console.log(ids);
     setBlogList(blogList.filter((list) => +list.id !== +ids));
-
-    if (idForNextPrev > 1) {
-      setIdForNextPrev(idForNextPrev - 1);
+    if (idForNextPrev === blogList.length - 1) {
+      setIdForNextPrev(0);
     }
   };
 
   //update handler
   const handleUpdate = (event) => {
     event.preventDefault();
+
     const ids = blogList[idForNextPrev].id;
     console.log(ids);
     setUpdateBlog(blogList.find((data) => data.id === ids));
+
+    setbuttonShowBlogPopUp(false);
+    setbuttonAddBlogPopUp(true);
   };
   console.log(updateBlog);
+  console.log(blogList.length);
+  console.log(idForNextPrev);
   //next blog handler
   const nextHandler = (event) => {
     event.preventDefault();
 
-    if (idForNextPrev <= blogList.length) {
-      if (idForNextPrev === blogList.length - 2 || blogList.length === 0) {
-        setNextDisable(true);
-      }
+    if (idForNextPrev < blogList.length - 1 && blogList.length - 1 > 0) {
       setIdForNextPrev(idForNextPrev + 1);
-    } else if (blogList.length === 1) {
-      setNextDisable(true);
     }
+    console.log(idForNextPrev);
   };
 
   //prev blog handler
@@ -57,7 +59,7 @@ const ShowBlog = (props) => {
 
     if (idForNextPrev <= blogList.length && idForNextPrev > 0) {
       setIdForNextPrev(idForNextPrev - 1);
-      setNextDisable(false);
+      // setNextDisable(false);
     }
   };
 
@@ -73,55 +75,60 @@ const ShowBlog = (props) => {
         </ModalHeader>
         <ModalBody>
           <h1 align="center">Show Blog Page</h1>
-          <form>
-            <Row>
-              <Col>
-                <div>
-                  <h2 align="center">
-                    <i>
-                      <u>{blogList[idForNextPrev].Title}</u>
-                    </i>
-                  </h2>
-                  <p align="right">
-                    Pubmish Date : {blogList[idForNextPrev].PublishDate}
-                  </p>
-                  <img
-                    height="300"
-                    width="700"
-                    src={blogList[idForNextPrev].Images}
-                  ></img>
-                  <p>{blogList[idForNextPrev].Content}</p>
-                  <div align="right">
-                    <p>- {blogList[idForNextPrev].BloggerName}</p>
-                    <p>{blogList[idForNextPrev].companyName}</p>
-                    <p>{blogList[idForNextPrev].RollCompany}</p>
-                  </div>
-                  <div align="center">
-                    <button
-                      value={blogList[idForNextPrev].id}
-                      onClick={handleDelete}
-                    >
-                      Delete
-                    </button>
-                    <NavLink to="/AddBlog.js">
+          {blogList.length === 0 && <h2>No Data Found</h2>}
+          {blogList.length > 0 && (
+            <form>
+              <Row>
+                <Col>
+                  <div>
+                    <h2 align="center">
+                      <i>
+                        <u>{blogList[idForNextPrev].Title}</u>
+                      </i>
+                    </h2>
+                    <p align="right">
+                      Pubmish Date : {blogList[idForNextPrev].PublishDate}
+                    </p>
+                    <img
+                      height="300"
+                      width="700"
+                      src={blogList[idForNextPrev].Images}
+                    ></img>
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: blogList[idForNextPrev].Content,
+                      }}
+                    />
+                    <div align="right">
+                      <p>- {blogList[idForNextPrev].BloggerName}</p>
+                      <p>{blogList[idForNextPrev].companyName}</p>
+                      <p>{blogList[idForNextPrev].RollCompany}</p>
+                    </div>
+                    <div align="center">
                       <button
                         value={blogList[idForNextPrev].id}
-                        onClick={handleUpdate}
+                        onClick={handleDelete}
                       >
-                        Update
+                        Delete
                       </button>
-                    </NavLink>
+                      <NavLink to="/AddBlog.js">
+                        <button
+                          value={blogList[idForNextPrev].id}
+                          onClick={handleUpdate}
+                        >
+                          Update
+                        </button>
+                      </NavLink>
+                    </div>
                   </div>
-                </div>
-              </Col>
-            </Row>
-          </form>
+                </Col>
+              </Row>
+            </form>
+          )}
           <div align="right">
             <button onClick={prevHandler}>PREV BLOG</button>
             <h6>{idForNextPrev + 1}</h6>
-            <button onClick={nextHandler} disabled={nextDisable}>
-              NEXT BLOG
-            </button>
+            <button onClick={nextHandler}>NEXT BLOG</button>
           </div>
         </ModalBody>
       </Modal>
