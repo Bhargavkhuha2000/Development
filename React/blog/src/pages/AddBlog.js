@@ -70,7 +70,7 @@ const AddBlog = (props) => {
           RollCompany: rollCmp,
           Title: title,
           PublishDate: publishDate,
-          // Content: contextValue,
+          Content: contextValue,
           // Content: document
           //   .getElementsByClassName('condata')
           //   .innerHTML('beforeend', contextValue),
