@@ -1,19 +1,21 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import validator from 'validator';
-import { Col } from 'react-bootstrap';
 const Reg = (props) => {
-  const { setBlogList, blogList } = props;
+  const { setregList, regList } = props;
+
+  const loginRedirect = useNavigate();
+
   const [userName, setUserName] = useState('');
   const [email, setEmail] = useState('');
   const [fullName, setFullName] = useState('');
   const [password, setPassword] = useState('');
   const [cPassword, setCpassword] = useState('');
   const [errorMsg, setErrorMsg] = useState(null);
-  const [data, setdata] = useState([]);
+
   const handleReg = (e) => {
     e.preventDefault();
     if (
@@ -24,23 +26,34 @@ const Reg = (props) => {
     ) {
       setErrorMsg('All Filed is mendetary');
       console.log('All Filed is mendetary');
+    } else if (!validator.isAlphanumeric(userName)) {
+      setErrorMsg('Enter valid user name');
+      console.log('Enter valid user name');
     } else if (!validator.isEmail(email)) {
       setErrorMsg('Email Not Valid');
       console.log('Email Not Valid');
     } else if (!email.includes('@prominentpixel.com')) {
       setErrorMsg('Your Email Ends with @prominentpixel.com');
       console.log('Your Email Ends with @prominentpixel.com');
+    } else if (!validator.isAlpha(fullName)) {
+      setErrorMsg('please enter valied name');
+      console.log('please enter valied name');
     } else if (password.trim().length < 6 || cPassword.trim().length < 6) {
       setErrorMsg('password atlist on 6 character');
       console.log('password atlist on 6 character');
+    } else if (!validator.isStrongPassword(password)) {
+      setErrorMsg('Give stroge password');
+      console.log(
+        'must have capital, small and special char  and also a number'
+      );
     } else if (password !== cPassword) {
       setErrorMsg('your password and confirm password are not same');
       console.log('your password and confirm password are not same');
     } else {
-      setBlogList([
-        ...blogList,
+      setregList([
+        ...regList,
         {
-          id: blogList.length,
+          id: regList.length,
           UserName: userName,
           Email: email,
           FullName: fullName,
@@ -53,10 +66,12 @@ const Reg = (props) => {
       setCpassword('');
       setPassword('');
       setErrorMsg(null);
-      console.log(blogList);
+      console.log(regList);
+      loginRedirect('/Login');
+      alert('Account is Created');
     }
   };
-  localStorage.setItem('regdata', JSON.stringify(...data, blogList));
+
   return (
     <>
       <div
@@ -65,7 +80,7 @@ const Reg = (props) => {
       >
         <Modal.Dialog>
           <Modal.Header>
-            <Modal.Title>Add Blog</Modal.Title>
+            <Modal.Title>Register</Modal.Title>
           </Modal.Header>
 
           <Modal.Body>
@@ -74,12 +89,12 @@ const Reg = (props) => {
                 className="mb-3"
                 controlId="exampleForm.ControlInput1"
               >
-                <Form.Label>User Name</Form.Label>
+                <Form.Label>Full Name</Form.Label>
                 <Form.Control
                   type="text"
-                  placeholder="User Name"
-                  value={userName}
-                  onChange={(e) => setUserName(e.target.value)}
+                  placeholder="Full Name"
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
                 />
               </Form.Group>
               <Form.Group
@@ -98,14 +113,15 @@ const Reg = (props) => {
                 className="mb-3"
                 controlId="exampleForm.ControlInput1"
               >
-                <Form.Label>Full Name</Form.Label>
+                <Form.Label>User Name</Form.Label>
                 <Form.Control
                   type="text"
-                  placeholder="Full Name"
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
+                  placeholder="User Name"
+                  value={userName}
+                  onChange={(e) => setUserName(e.target.value)}
                 />
               </Form.Group>
+
               <Form.Group
                 className="mb-3"
                 controlId="exampleForm.ControlInput1"

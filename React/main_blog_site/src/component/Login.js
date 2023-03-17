@@ -1,9 +1,67 @@
 import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-const Login = () => {
+import validator from 'validator';
+const Login = (props) => {
+  const redirectHome = useNavigate();
+
+  const { regList } = props;
+
+  const [email, setemail] = useState('');
+  const [password, setpassword] = useState('');
+  const [errorMsg, setErrorMsg] = useState(null);
+  const [loginSelecter, setLoginSelecter] = useState('Email');
+
+  const loginHandler = (e) => {
+    e.preventDefault();
+
+    const getregData = localStorage.getItem('regdata');
+    console.log(getregData);
+
+    if (email.trim().length === 0 || password.trim().length === 0) {
+      setErrorMsg('All Filed is mendetary');
+      console.log('All Filed is mendetary');
+    } else if (loginSelecter === 'Email' && !validator.isEmail(email)) {
+      setErrorMsg('Email Not Valid');
+      console.log('Email Not Valid');
+    } else if (
+      loginSelecter === 'Email' &&
+      !email.includes('@prominentpixel.com')
+    ) {
+      setErrorMsg('Your Email Ends with @prominentpixel.com');
+      console.log('Your Email Ends with @prominentpixel.com');
+    } else if (password.trim().length < 6) {
+      setErrorMsg('password atlist on 6 character');
+      console.log('password atlist on 6 character');
+    } else {
+      if (getregData.length) {
+        const userdata = JSON.parse(getregData);
+        const userlogin = userdata.filter((el, k) => {
+          if (loginSelecter === 'Email') {
+            return el.Email === email && el.Password === password;
+          } else if (loginSelecter === 'UserName') {
+            return el.UserName === email && el.Password === password;
+          }
+        });
+
+        console.log(userlogin);
+
+        if (userlogin.length === 0) {
+          alert('Invalid Data');
+        } else {
+          alert('Login Successfull');
+          localStorage.setItem('userLogin', JSON.stringify(userlogin));
+          redirectHome('/Home');
+          window.location.reload(false);
+        }
+      }
+    }
+  };
+
+  localStorage.setItem('regdata', JSON.stringify(regList));
+
   return (
     <>
       <div
@@ -12,7 +70,7 @@ const Login = () => {
       >
         <Modal.Dialog>
           <Modal.Header>
-            <Modal.Title>Add Blog</Modal.Title>
+            <Modal.Title>Login</Modal.Title>
           </Modal.Header>
 
           <Modal.Body>
@@ -21,12 +79,25 @@ const Login = () => {
                 className="mb-3"
                 controlId="exampleForm.ControlInput1"
               >
-                <Form.Label>Email</Form.Label>
+                <Form.Select
+                  aria-label="Default select example"
+                  value={loginSelecter}
+                  onChange={(e) => setLoginSelecter(e.target.value)}
+                >
+                  <option value="Email">Email</option>
+                  <option value="UserName">User Name</option>
+                </Form.Select>
+              </Form.Group>
+              <Form.Group
+                className="mb-3"
+                controlId="exampleForm.ControlInput1"
+              >
+                <Form.Label>{loginSelecter}</Form.Label>
                 <Form.Control
                   type="email"
-                  //   value={blgName}
-                  //   onChange={(event) => setblgName(event.target.value)}
-                  placeholder="Email"
+                  value={email}
+                  onChange={(event) => setemail(event.target.value)}
+                  placeholder={loginSelecter}
                 />
               </Form.Group>
 
@@ -37,10 +108,16 @@ const Login = () => {
                 <Form.Label>Password</Form.Label>
                 <Form.Control
                   type="password"
-                  //   value={title}
-                  //   onChange={(event) => settitle(event.target.value)}
+                  value={password}
+                  onChange={(event) => setpassword(event.target.value)}
                   placeholder="Password"
                 />
+              </Form.Group>
+              <Form.Group
+                className="mb-3"
+                controlId="exampleForm.ControlInput1"
+              >
+                <Form.Label style={{ color: 'red' }}>{errorMsg}</Form.Label>
               </Form.Group>
             </form>
           </Modal.Body>
@@ -49,7 +126,9 @@ const Login = () => {
             <NavLink to="/">
               <Button variant="secondary">Close</Button>
             </NavLink>
-            <Button variant="primary">Save changes</Button>
+            <Button variant="primary" onClick={loginHandler}>
+              Login
+            </Button>
           </Modal.Footer>
           <p align="center">
             Don't Have Account?
