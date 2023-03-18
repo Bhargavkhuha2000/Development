@@ -1,5 +1,5 @@
 import logo from './logo.svg';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './App.css';
 import { Route, Routes, NavLink } from 'react-router-dom';
 import AddBlog from './component/AddBlog';
@@ -9,9 +9,8 @@ import Home from './component/Home';
 import Reg from './component/Reg';
 
 function App() {
-  const [loginPopup, setLoginPopup] = useState(false);
-  const [blogList, setBlogList] = useState([]);
-  // const [updateBlog, setUpdateBlog] = useState(null);
+  const [regList, setregList] = useState([]);
+
   return (
     <>
       <Home />
@@ -22,14 +21,14 @@ function App() {
         <Route
           path="/login"
           element={
-            <Login />
+            <Login regList={regList} />
             // <Login loginPopup={loginPopup} setLoginPopup={setLoginPopup} />
           }
         />
         <Route
           path="/reg"
           element={
-            <Reg blogList={blogList} setBlogList={setBlogList} />
+            <Reg regList={regList} setregList={setregList} />
             // <Reg loginPopup={loginPopup} setLoginPopup={setLoginPopup} />
           }
         />
