@@ -15,9 +15,11 @@ const Reg = (props) => {
   const [password, setPassword] = useState('');
   const [cPassword, setCpassword] = useState('');
   const [errorMsg, setErrorMsg] = useState(null);
+  const regdata = JSON.parse(localStorage.getItem('regdata'));
 
   const handleReg = (e) => {
     e.preventDefault();
+
     if (
       userName.trim().length === 0 ||
       fullName.trim().length === 0 ||
@@ -50,25 +52,45 @@ const Reg = (props) => {
       setErrorMsg('your password and confirm password are not same');
       console.log('your password and confirm password are not same');
     } else {
-      setregList([
-        ...regList,
-        {
-          id: regList.length,
-          UserName: userName,
-          Email: email,
-          FullName: fullName,
-          Password: password,
-        },
-      ]);
-      setUserName('');
-      setEmail('');
-      setFullName('');
-      setCpassword('');
-      setPassword('');
-      setErrorMsg(null);
-      console.log(regList);
-      loginRedirect('/Login');
-      alert('Account is Created');
+      let isFound = false;
+      console.log(regdata.length);
+      for (let i = 0; i < regdata.length; i++) {
+        console.log(i);
+        if (regdata[i].UserName === userName) {
+          setErrorMsg('Username is already used');
+          isFound = true;
+          break;
+        } else if (regdata[i].Email === email) {
+          setErrorMsg('Email is already used');
+          // if (isFound === true) {
+          // break;
+          // } else {
+          isFound = true;
+          break;
+          // }
+        }
+      }
+      if (isFound === false) {
+        setregList([
+          ...regList,
+          {
+            id: regList.length,
+            UserName: userName,
+            Email: email,
+            FullName: fullName,
+            Password: password,
+          },
+        ]);
+        setUserName('');
+        setEmail('');
+        setFullName('');
+        setCpassword('');
+        setPassword('');
+        setErrorMsg(null);
+        console.log(regList);
+        loginRedirect('/Login');
+        alert('Account is Created');
+      }
     }
   };
 

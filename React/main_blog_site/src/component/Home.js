@@ -18,18 +18,19 @@ const Home = () => {
             Home
           </button>
         </NavLink>
-        <NavLink to="/AddBlog">
-          <button class="btn btn-outline-success me-3" type="button">
-            Add Blog
-          </button>
-        </NavLink>
-        <NavLink to="/ShowBlog">
-          <button class="btn btn-outline-success me-3" type="button">
-            Show Blog
-          </button>
-        </NavLink>
         {getlogindata && (
           <>
+            <NavLink to="/AddBlog">
+              <button class="btn btn-outline-success me-3" type="button">
+                Add Blog
+              </button>
+            </NavLink>
+            <NavLink to="/ShowBlog">
+              <button class="btn btn-outline-success me-3" type="button">
+                Show Blog
+              </button>
+            </NavLink>
+
             <button
               class="btn btn-outline-success me-3"
               type="button"
