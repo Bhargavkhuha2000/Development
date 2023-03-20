@@ -1,16 +1,28 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { NavLink, useNavigate } from 'react-router-dom';
 import JoditEditor from 'jodit-react';
 import Select from 'react-select';
+import validator from 'validator';
 // import validator from 'validator';
-const AddBlog = () => {
+const AddBlog = (props) => {
+  const { blogList, setBlogList, updateBlog, setUpdateBlog } = props;
+  const nav = useNavigate();
   const editor = useRef(null);
   const [description, setDescription] = useState('');
   const [file, setfile] = useState('');
+  const [title, setTitle] = useState('');
   const [selectedOptions, setSelectedOptions] = useState();
+  const [erMsg, setErMsg] = useState('');
+  // const [btnDisable,setBtnDisable]=useState(true);
+  const loginData = JSON.parse(localStorage.getItem('userLogin'));
+  const current = new Date();
+  const date = `${current.getDate()}/${
+    current.getMonth() + 1
+  }/${current.getFullYear()}`;
+  // console.log(loginData);
   const optionList = [
     {
       value: 'Java',
@@ -29,6 +41,32 @@ const AddBlog = () => {
       label: 'HTML',
     },
   ];
+  const updateNewData = (
+    ids,
+    title,
+    discription,
+    file,
+    author,
+    publishDate,
+    tags
+  ) => {
+    setBlogList(
+      blogList.map((d) =>
+        +d.id === +ids
+          ? {
+              id: ids,
+              Title: title,
+              Description: discription,
+              Images: file,
+              Author: author,
+              PublishDate: publishDate,
+              Tags: tags,
+            }
+          : d
+      )
+    );
+    setUpdateBlog('');
+  };
   const handleSelect = (data) => {
     setSelectedOptions(data);
   };
@@ -36,6 +74,65 @@ const AddBlog = () => {
     console.log(e.target.files);
     setfile(URL.createObjectURL(e.target.files[0]));
   };
+  const publishHandler = (e) => {
+    e.preventDefault();
+    if (
+      title.trim().length === 0 ||
+      description.trim().length === 0 ||
+      file === '' ||
+      selectedOptions.length === 0
+    ) {
+      setErMsg('*All field is mendetory');
+    } else if (!validator.isAlpha(title)) {
+      setErMsg('*Title is not valid');
+    } else {
+      if (!updateBlog) {
+        setBlogList([
+          ...blogList,
+          {
+            id: blogList.length,
+            Title: title,
+            Description: description,
+            Images: file,
+            Author: loginData[0].FullName,
+            PublishDate: date,
+            Tags: selectedOptions,
+          },
+        ]);
+        alert('Blog is Publish');
+      } else {
+        updateNewData(
+          +updateBlog.id,
+          title,
+          description,
+          file,
+          loginData[0].FullName,
+          date,
+          selectedOptions
+        );
+        alert('Blog Updated');
+        nav('/ShowBlog');
+      }
+      setTitle('');
+      setDescription('');
+      setSelectedOptions('');
+      setErMsg('');
+      console.log(blogList);
+    }
+  };
+  useEffect(() => {
+    if (updateBlog) {
+      // console.log(updateData.fname);
+      setTitle(updateBlog.Title);
+      setDescription(updateBlog.Description);
+      setfile(updateBlog.Images);
+      setSelectedOptions(updateBlog.Tags);
+    } else {
+      setTitle('');
+      setDescription('');
+      setSelectedOptions('');
+    }
+  }, [setTitle, setDescription, setSelectedOptions, setfile, updateBlog]);
   return (
     <>
       <div
@@ -43,7 +140,7 @@ const AddBlog = () => {
         style={{ display: 'block', position: 'initial' }}
       >
         <Modal.Dialog>
-          <Modal.Header closeButton>
+          <Modal.Header>
             <Modal.Title>Add Blog</Modal.Title>
           </Modal.Header>
 
@@ -57,8 +154,8 @@ const AddBlog = () => {
                 <Form.Control
                   type="text"
                   placeholder="Full Name"
-                  // value={fullName}
-                  // onChange={(e) => setFullName(e.target.value)}
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
                 />
               </Form.Group>
               <Form.Group
@@ -102,16 +199,26 @@ const AddBlog = () => {
                 <Form.Label>Author</Form.Label>
                 <Form.Control
                   type="text"
-                  placeholder="Author"
+                  placeholder={loginData[0].FullName}
                   disabled={true}
                 />
+              </Form.Group>
+              <Form.Group
+                className="mb-3"
+                controlId="exampleForm.ControlInput1"
+              >
+                <Form.Label style={{ color: 'red' }}>{erMsg}</Form.Label>
               </Form.Group>
             </form>
           </Modal.Body>
 
           <Modal.Footer>
-            <Button variant="secondary">Close</Button>
-            <Button variant="primary">Add Blog</Button>
+            <Button variant="secondary" onClick={() => nav('/Home')}>
+              Close
+            </Button>
+            <Button variant="primary" onClick={publishHandler}>
+              {updateBlog ? 'Update' : 'Publish'}
+            </Button>
           </Modal.Footer>
         </Modal.Dialog>
       </div>

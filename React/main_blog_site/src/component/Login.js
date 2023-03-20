@@ -59,7 +59,6 @@ const Login = (props) => {
       }
     }
   };
-
   localStorage.setItem('regdata', JSON.stringify(regList));
 
   return (
