@@ -54,7 +54,7 @@ const Login = (props) => {
           alert('Login Successfull');
           localStorage.setItem('userLogin', JSON.stringify(userlogin));
           redirectHome('/Home');
-          window.location.reload(false);
+          // window.location.reload(false);
         }
       }
     }

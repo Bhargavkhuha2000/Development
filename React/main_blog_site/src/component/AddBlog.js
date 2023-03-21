@@ -120,6 +120,13 @@ const AddBlog = (props) => {
       console.log(blogList);
     }
   };
+  const closeHandler = (e) => {
+    e.preventDefault();
+    if (updateBlog) {
+      setUpdateBlog('');
+    }
+    nav('/Home');
+  };
   useEffect(() => {
     if (updateBlog) {
       // console.log(updateData.fname);
@@ -213,7 +220,7 @@ const AddBlog = (props) => {
           </Modal.Body>
 
           <Modal.Footer>
-            <Button variant="secondary" onClick={() => nav('/Home')}>
+            <Button variant="secondary" onClick={closeHandler}>
               Close
             </Button>
             <Button variant="primary" onClick={publishHandler}>

@@ -1,19 +1,19 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
 import Accordion from 'react-bootstrap/Accordion';
 import Table from 'react-bootstrap/Table';
 import HomeTable from './HomeTable';
 
 const Home = (props) => {
   const { blogList } = props;
-  const getlogindata = JSON.parse(localStorage.getItem('userLogin'));
-  console.log(getlogindata);
-
+  const nav = useNavigate();
   const LogoutHandler = () => {
     localStorage.removeItem('userLogin');
-    window.location.reload(false);
+    nav('/Home');
+    // window.location.reload(false);
   };
-
+  const getlogindata = JSON.parse(localStorage.getItem('userLogin'));
+  console.log(getlogindata);
   return (
     <>
       <nav class="navbar bg-body-tertiary">

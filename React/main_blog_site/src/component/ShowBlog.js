@@ -29,6 +29,9 @@ const ShowBlog = (props) => {
     setUpdateBlog(blogList.find((data) => data.id === ids));
     nav('/AddBlog');
   };
+  // if (blogList.length === 1) {
+  //   setndis(true);
+  // }
   const nextHandler = (event) => {
     event.preventDefault();
 
@@ -38,7 +41,7 @@ const ShowBlog = (props) => {
       if (idForNextPrev === blogList.length - 2) {
         setndis(true);
       }
-    } else if (idForNextPrev === blogList.length - 1) {
+    } else if (idForNextPrev === blogList.length - 1 || blogList.length === 1) {
       setndis(true);
     }
     console.log(idForNextPrev);
@@ -72,7 +75,7 @@ const ShowBlog = (props) => {
           {blogList.length > 0 && (
             <>
               <Modal.Dialog>
-                <Modal.Header closeButton>
+                <Modal.Header>
                   <Modal.Title>Show Blog</Modal.Title>
                 </Modal.Header>
 
@@ -113,6 +116,9 @@ const ShowBlog = (props) => {
                 </Modal.Body>
 
                 <Modal.Footer>
+                  <Button variant="secondary" onClick={() => nav('/Home')}>
+                    Close
+                  </Button>
                   <Button
                     variant="primary"
                     onClick={prevHandler}
