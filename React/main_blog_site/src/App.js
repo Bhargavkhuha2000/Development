@@ -13,7 +13,7 @@ function App() {
   const [regList, setregList] = useState([]);
   const [blogList, setBlogList] = useState([]);
   const [updateBlog, setUpdateBlog] = useState(null);
-
+  // localStorage.setItem('blogList', JSON.stringify(blogList));
   return (
     <>
       <Home blogList={blogList} />
