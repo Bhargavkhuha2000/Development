@@ -22,19 +22,15 @@ const Login = (props) => {
 
     if (email.trim().length === 0 || password.trim().length === 0) {
       setErrorMsg('All Filed is mendetary');
-      console.log('All Filed is mendetary');
     } else if (loginSelecter === 'Email' && !validator.isEmail(email)) {
       setErrorMsg('Email Not Valid');
-      console.log('Email Not Valid');
     } else if (
       loginSelecter === 'Email' &&
       !email.includes('@prominentpixel.com')
     ) {
       setErrorMsg('Your Email Ends with @prominentpixel.com');
-      console.log('Your Email Ends with @prominentpixel.com');
     } else if (password.trim().length < 6) {
       setErrorMsg('password atlist on 6 character');
-      console.log('password atlist on 6 character');
     } else {
       if (getregData.length) {
         const userdata = JSON.parse(getregData);
@@ -54,7 +50,6 @@ const Login = (props) => {
           alert('Login Successfull');
           localStorage.setItem('userLogin', JSON.stringify(userlogin));
           redirectHome('/Home');
-          // window.location.reload(false);
         }
       }
     }

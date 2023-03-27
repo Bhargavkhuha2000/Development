@@ -1,73 +1,66 @@
 import logo from './logo.svg';
-import { useState, useEffect } from 'react';
+import React, { useState, Suspense } from 'react';
 import './App.css';
-import { Route, Routes, NavLink } from 'react-router-dom';
-import AddBlog from './component/AddBlog';
-import ShowBlog from './component/ShowBlog';
-import Login from './component/Login';
-import Home from './component/Home';
-import Reg from './component/Reg';
-import HomeTable from './component/HomeTable';
+import { Route, Routes } from 'react-router-dom';
+
+const AddBlog = React.lazy(() => import('./component/AddBlog'));
+const ShowBlog = React.lazy(() => import('./component/ShowBlog'));
+const Login = React.lazy(() => import('./component/Login'));
+const Home = React.lazy(() => import('./component/Home'));
+const Reg = React.lazy(() => import('./component/Reg'));
+const HomeTable = React.lazy(() => import('./component/HomeTable'));
 
 function App() {
   const [regList, setregList] = useState([]);
   const [blogList, setBlogList] = useState([]);
   const [updateBlog, setUpdateBlog] = useState(null);
-  // localStorage.setItem('blogList', JSON.stringify(blogList));
   return (
     <>
       <Home blogList={blogList} />
-      <Routes>
-        <Route
-          path="/home"
-          element={
-            <HomeTable
-              blogList={blogList}
-              setBlogList={setBlogList}
-              setUpdateBlog={setUpdateBlog}
-            />
-          }
-        />
-        <Route
-          path="/addblog"
-          element={
-            <AddBlog
-              blogList={blogList}
-              setBlogList={setBlogList}
-              setUpdateBlog={setUpdateBlog}
-              updateBlog={updateBlog}
-            />
-          }
-        />
-        <Route
-          path="/showblog"
-          element={
-            <ShowBlog
-              blogList={blogList}
-              setBlogList={setBlogList}
-              setUpdateBlog={setUpdateBlog}
-              updateBlog={updateBlog}
-            />
-          }
-        />
-        <Route
-          path="/login"
-          element={
-            <Login regList={regList} />
-            // <Login loginPopup={loginPopup} setLoginPopup={setLoginPopup} />
-          }
-        />
-        <Route
-          path="/reg"
-          element={
-            <Reg regList={regList} setregList={setregList} />
-            // <Reg loginPopup={loginPopup} setLoginPopup={setLoginPopup} />
-          }
-        />
-      </Routes>
-      {/* <Reg /> */}
+      <Suspense>
+        <Routes>
+          <Route
+            path="/home"
+            element={
+              <HomeTable
+                blogList={blogList}
+                setBlogList={setBlogList}
+                setUpdateBlog={setUpdateBlog}
+              />
+            }
+          />
+          <Route
+            path="/addblog"
+            element={
+              <AddBlog
+                blogList={blogList}
+                setBlogList={setBlogList}
+                setUpdateBlog={setUpdateBlog}
+                updateBlog={updateBlog}
+              />
+            }
+          />
+          <Route
+            path="/showblog"
+            element={
+              <ShowBlog
+                blogList={blogList}
+                setBlogList={setBlogList}
+                setUpdateBlog={setUpdateBlog}
+                updateBlog={updateBlog}
+              />
+            }
+          />
+          <Route path="/login" element={<Login regList={regList} />} />
+          <Route
+            path="/reg"
+            element={<Reg regList={regList} setregList={setregList} />}
+          />
+        </Routes>
+      </Suspense>
     </>
   );
 }
 
 export default App;
+// url : https://blogsite-2b01f.web.app/

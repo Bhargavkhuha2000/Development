@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
@@ -27,30 +27,20 @@ const Reg = (props) => {
       cPassword.trim().length === 0
     ) {
       setErrorMsg('All Filed is mendetary');
-      console.log('All Filed is mendetary');
     } else if (!validator.isAlphanumeric(userName)) {
       setErrorMsg('Enter valid user name');
-      console.log('Enter valid user name');
     } else if (!validator.isEmail(email)) {
       setErrorMsg('Email Not Valid');
-      console.log('Email Not Valid');
     } else if (!email.includes('@prominentpixel.com')) {
       setErrorMsg('Your Email Ends with @prominentpixel.com');
-      console.log('Your Email Ends with @prominentpixel.com');
     } else if (!validator.isAlpha(fullName)) {
       setErrorMsg('please enter valied name');
-      console.log('please enter valied name');
     } else if (password.trim().length < 6 || cPassword.trim().length < 6) {
       setErrorMsg('password atlist on 6 character');
-      console.log('password atlist on 6 character');
     } else if (!validator.isStrongPassword(password)) {
       setErrorMsg('Give stroge password');
-      console.log(
-        'must have capital, small and special char  and also a number'
-      );
     } else if (password !== cPassword) {
       setErrorMsg('your password and confirm password are not same');
-      console.log('your password and confirm password are not same');
     } else {
       let isFound = false;
       console.log(regdata.length);
@@ -62,12 +52,8 @@ const Reg = (props) => {
           break;
         } else if (regdata[i].Email === email) {
           setErrorMsg('Email is already used');
-          // if (isFound === true) {
-          // break;
-          // } else {
           isFound = true;
           break;
-          // }
         }
       }
       if (isFound === false) {

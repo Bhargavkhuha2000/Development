@@ -2,11 +2,10 @@ import React, { useRef, useState, useEffect } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import JoditEditor from 'jodit-react';
 import Select from 'react-select';
 import validator from 'validator';
-// import validator from 'validator';
 const AddBlog = (props) => {
   const { blogList, setBlogList, updateBlog, setUpdateBlog } = props;
   const nav = useNavigate();
@@ -16,13 +15,13 @@ const AddBlog = (props) => {
   const [title, setTitle] = useState('');
   const [selectedOptions, setSelectedOptions] = useState();
   const [erMsg, setErMsg] = useState('');
-  // const [btnDisable,setBtnDisable]=useState(true);
+
   const loginData = JSON.parse(localStorage.getItem('userLogin'));
   const current = new Date();
   const date = `${current.getDate()}/${
     current.getMonth() + 1
   }/${current.getFullYear()}`;
-  // console.log(loginData);
+
   const optionList = [
     {
       value: 'Java',
@@ -129,7 +128,6 @@ const AddBlog = (props) => {
   };
   useEffect(() => {
     if (updateBlog) {
-      // console.log(updateData.fname);
       setTitle(updateBlog.Title);
       setDescription(updateBlog.Description);
       setfile(updateBlog.Images);

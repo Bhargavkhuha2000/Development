@@ -1,5 +1,4 @@
 import React from 'react';
-import Table from 'react-bootstrap/Table';
 import Accordion from 'react-bootstrap/Accordion';
 import { useNavigate } from 'react-router-dom';
 const HomeTable = (props) => {
@@ -7,7 +6,6 @@ const HomeTable = (props) => {
   const nav = useNavigate();
   const loginData = JSON.parse(localStorage.getItem('userLogin'));
   const handleDelete = (ids) => {
-    // e.preventDefault();
     setBlogList(blogList.filter((list) => +list.id !== +ids));
   };
   const handleUpdate = (ids) => {
@@ -18,7 +16,6 @@ const HomeTable = (props) => {
     e.preventDefault();
     nav('/ShowBlog');
   };
-  //   console.log(blogList[0].Tags[1].value);
   return (
     <div>
       {loginData && blogList.length > 0 && (
