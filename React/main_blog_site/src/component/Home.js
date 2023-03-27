@@ -1,8 +1,5 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import Accordion from 'react-bootstrap/Accordion';
-import Table from 'react-bootstrap/Table';
-import HomeTable from './HomeTable';
 
 const Home = (props) => {
   const { blogList } = props;
@@ -10,7 +7,6 @@ const Home = (props) => {
   const LogoutHandler = () => {
     localStorage.removeItem('userLogin');
     nav('/Home');
-    // window.location.reload(false);
   };
   const getlogindata = JSON.parse(localStorage.getItem('userLogin'));
   console.log(getlogindata);
@@ -62,7 +58,6 @@ const Home = (props) => {
           {console.log(blogList)}
         </form>
       </nav>
-      {/* <HomeTable /> */}
     </>
   );
 };

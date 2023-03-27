@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
-import Card from 'react-bootstrap/Card';
 import Modal from 'react-bootstrap/Modal';
 import { useNavigate } from 'react-router-dom';
 
 const ShowBlog = (props) => {
   const nav = useNavigate();
-  const { blogList, setBlogList, setUpdateBlog, updateBlog } = props;
+  const { blogList, setBlogList, setUpdateBlog } = props;
   const [idForNextPrev, setIdForNextPrev] = useState(0);
   const [dis, setDis] = useState(true);
   const [ndis, setndis] = useState(false);
@@ -29,9 +28,6 @@ const ShowBlog = (props) => {
     setUpdateBlog(blogList.find((data) => data.id === ids));
     nav('/AddBlog');
   };
-  // if (blogList.length === 1) {
-  //   setndis(true);
-  // }
   const nextHandler = (event) => {
     event.preventDefault();
 
@@ -47,7 +43,6 @@ const ShowBlog = (props) => {
     console.log(idForNextPrev);
   };
 
-  //prev blog handler
   const prevHandler = (event) => {
     event.preventDefault();
 
@@ -57,13 +52,11 @@ const ShowBlog = (props) => {
       if (idForNextPrev === 1) {
         setDis(true);
       }
-      // setNextDisable(false);
     } else if (idForNextPrev === 0) {
       console.log(`dis index : ${idForNextPrev}`);
       setDis(true);
     }
   };
-  console.log(`length${blogList.length}`);
   return (
     <>
       {loginData.length !== 0 && (
