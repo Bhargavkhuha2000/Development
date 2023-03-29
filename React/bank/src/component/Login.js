@@ -7,7 +7,7 @@ import validator from 'validator';
 import { NavLink, useNavigate } from 'react-router-dom';
 const Login = (props) => {
   const redirectHome = useNavigate();
-
+  const { setCurrentBalance, setFinalBalance } = props;
   const { RegisterData } = props;
 
   const [email, setemail] = useState('');
@@ -50,6 +50,8 @@ const Login = (props) => {
         } else {
           alert('Login Successfull');
           localStorage.setItem('userLogin', JSON.stringify(userlogin));
+          // setCurrentBalance(userlogin.Balance);
+          // setFinalBalance(userlogin.Balance);
           redirectHome('/Dashboard');
         }
       }

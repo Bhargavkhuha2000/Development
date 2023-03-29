@@ -1,12 +1,76 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import validator from 'validator';
-import { NavLink, useNavigate } from 'react-router-dom';
-const DebitFund = () => {
+import { NavLink } from 'react-router-dom';
+const DebitFund = (props) => {
+  const {
+    fundManage,
+    date,
+    setFundManage,
+    finalBalance,
+    setFinalBalance,
+    setCurrentBalance,
+    CurrentBalance,
+  } = props;
+  const getLoginData = JSON.parse(localStorage.getItem('userLogin'));
+  const getregData = JSON.parse(localStorage.getItem('regdata'));
+  const [debitAmount, setDebitAmount] = useState(0);
+  // const [finalBalance, setFinalBalance] = useState(getLoginData[0].Balance);
+  const [errorMsg, setErrorMsg] = useState('');
+  const debitHandler = (e) => {
+    setDebitAmount(e.target.value);
+    if (+getLoginData[0].Balance >= +e.target.value) {
+      setFinalBalance(+getLoginData[0].Balance - +e.target.value);
+      setErrorMsg('');
+    } else {
+      setErrorMsg('debit amount is greater than available balance');
+    }
+  };
+  const debitClickHandler = (e) => {
+    e.preventDefault();
+    if (+getLoginData[0].Balance >= debitAmount) {
+      if (debitAmount > 0) {
+        setFundManage([
+          ...fundManage,
+          {
+            id: fundManage.length,
+            UserName: getLoginData[0].FullName,
+            CreditAmount: '-',
+            DebitAmount: debitAmount,
+            Date: date,
+            FinalBalance: finalBalance,
+          },
+        ]);
+        setDebitAmount(0);
+        setErrorMsg('');
+        setCurrentBalance(finalBalance);
+        getLoginData[0].Balance = finalBalance;
+        // getregData.map((d) => {
+        //   d.FullName !== getLoginData[0].FullName
+        //     ? localStorage.setItem('regdata', JSON.stringify(d))
+        //     : localStorage.setItem('regdata', JSON.stringify(getLoginData));
+        // });
+        localStorage.setItem('userLogin', JSON.stringify(getLoginData));
+        for (let i = 0; i < getregData.length; i++) {
+          if (getregData[i].UserName === getLoginData[0].UserName) {
+            getregData[i].Balance = getLoginData[0].Balance;
+            localStorage.setItem('regdata', JSON.stringify(getregData[i]));
+          } else {
+            localStorage.setItem('regdata', JSON.stringify(getregData[i]));
+          }
+        }
+        console.log(fundManage);
+        alert('Fund Debited successfully');
+      } else {
+        setErrorMsg('nagative value is not valid');
+      }
+    } else {
+      setErrorMsg('debit amount is greater than available balance ');
+    }
+  };
   return (
     <div>
       <Row>
@@ -26,12 +90,22 @@ const DebitFund = () => {
                     className="mb-3"
                     controlId="exampleForm.ControlInput1"
                   >
+                    <Form.Label>User Name</Form.Label>
+                    <Form.Control
+                      type="text"
+                      disabled={true}
+                      placeholder={getLoginData[0].FullName}
+                    />
+                  </Form.Group>
+                  <Form.Group
+                    className="mb-3"
+                    controlId="exampleForm.ControlInput1"
+                  >
                     <Form.Label>Available Balance</Form.Label>
                     <Form.Control
                       type="number"
-                      // value={email}
-                      // onChange={(event) => setemail(event.target.value)}
-                      // placeholder={loginSelecter}
+                      disabled={true}
+                      placeholder={CurrentBalance}
                     />
                   </Form.Group>
 
@@ -42,8 +116,9 @@ const DebitFund = () => {
                     <Form.Label>Debit Amount</Form.Label>
                     <Form.Control
                       type="number"
-                      // value={password}
-                      // onChange={(event) => setpassword(event.target.value)}
+                      min="0"
+                      value={debitAmount}
+                      onChange={debitHandler}
                       placeholder="Enter Debit Amount"
                     />
                   </Form.Group>
@@ -54,16 +129,16 @@ const DebitFund = () => {
                     <Form.Label>Final Balance</Form.Label>
                     <Form.Control
                       type="number"
-                      // value={password}
-                      // onChange={(event) => setpassword(event.target.value)}
-                      placeholder=""
+                      disabled={true}
+                      value={finalBalance}
+                      placeholder={finalBalance}
                     />
                   </Form.Group>
                   <Form.Group
                     className="mb-3"
                     controlId="exampleForm.ControlInput1"
                   >
-                    {/* <Form.Label style={{ color: 'red' }}>{errorMsg}</Form.Label> */}
+                    <Form.Label style={{ color: 'red' }}>{errorMsg}</Form.Label>
                   </Form.Group>
                 </form>
               </Modal.Body>
@@ -72,7 +147,7 @@ const DebitFund = () => {
                 <NavLink to="/">
                   <Button variant="secondary">Close</Button>
                 </NavLink>
-                <Button variant="primary" onClick={() => {}}>
+                <Button variant="primary" onClick={debitClickHandler}>
                   Debit Fund
                 </Button>
               </Modal.Footer>

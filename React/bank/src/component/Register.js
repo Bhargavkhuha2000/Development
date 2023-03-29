@@ -17,6 +17,7 @@ const Register = (props) => {
   const [password, setPassword] = useState('');
   const [cPassword, setCpassword] = useState('');
   const [errorMsg, setErrorMsg] = useState(null);
+  const [balance, setBalance] = useState(0);
   const regdata = JSON.parse(localStorage.getItem('regdata'));
 
   const handleReg = (e) => {
@@ -66,6 +67,7 @@ const Register = (props) => {
             UserName: userName,
             Email: email,
             FullName: fullName,
+            Balance: balance,
             Password: password,
           },
         ]);
@@ -74,6 +76,7 @@ const Register = (props) => {
         setFullName('');
         setCpassword('');
         setPassword('');
+        setBalance(0);
         setErrorMsg(null);
         console.log(RegisterData);
         loginRedirect('/Login');
@@ -132,7 +135,19 @@ const Register = (props) => {
                       onChange={(e) => setUserName(e.target.value)}
                     />
                   </Form.Group>
-
+                  <Form.Group
+                    className="mb-3"
+                    controlId="exampleForm.ControlInput1"
+                  >
+                    <Form.Label>Balance</Form.Label>
+                    <Form.Control
+                      type="number"
+                      min="0"
+                      placeholder="Enter Your Balance.."
+                      value={balance}
+                      onChange={(e) => setBalance(e.target.value)}
+                    />
+                  </Form.Group>
                   <Form.Group
                     className="mb-3"
                     controlId="exampleForm.ControlInput1"
