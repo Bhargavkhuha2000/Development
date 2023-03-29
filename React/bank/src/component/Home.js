@@ -10,11 +10,14 @@ import './footer.css';
 import './SideNavBar.css';
 import { NavLink } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-const Home = () => {
+const Home = (props) => {
+  const { setCurrentBalance, setFinalBalance } = props;
   const nav = useNavigate();
   const [dis, setdis] = useState(true);
   const LogoutHandler = () => {
     localStorage.removeItem('userLogin');
+    // setCurrentBalance(0);
+    // setFinalBalance(0);
     nav('/Home');
   };
   const getlogindata = JSON.parse(localStorage.getItem('userLogin'));

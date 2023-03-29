@@ -2,14 +2,32 @@ import React from 'react';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
-import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 import { BsFillTrashFill } from 'react-icons/bs';
 import { BsFillPencilFill } from 'react-icons/bs';
-const Dashboard = () => {
+const Dashboard = (props) => {
+  const {
+    fundManage,
+    date,
+    setFundManage,
+    finalBalance,
+    setFinalBalance,
+    setCurrentBalance,
+    CurrentBalance,
+  } = props;
+  const getLoginData = JSON.parse(localStorage.getItem('userLogin'));
+  let i = 0;
+  const data = fundManage.filter((d) =>
+    d.UserName === getLoginData[0].FullName ? d : ''
+  );
   return (
     <div style={{ marginTop: '25px' }}>
       <h1 align="center">DashBoard</h1>
+      {getLoginData && (
+        <h4 style={{ marginLeft: '270px' }}>
+          Available Balance :{getLoginData[0].Balance}
+        </h4>
+      )}
       <Row>
         <Col>
           <Col>
@@ -27,25 +45,27 @@ const Dashboard = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <th>1</th>
-                    <td>Bhargav</td>
-                    <td>2000</td>
-                    <td>-</td>
-                    <td>28/3/2023</td>
-                    <td>5000</td>
-                    <td>
-                      <div>
-                        <Button variant="light">
-                          <BsFillTrashFill />
-                        </Button>
+                  {data.map((d) => (
+                    <tr>
+                      <th>{++i}</th>
+                      <td>{d.UserName}</td>
+                      <td>{d.CreditAmount}</td>
+                      <td>{d.DebitAmount}</td>
+                      <td>{d.Date}</td>
+                      <td>{d.FinalBalance}</td>
+                      <td>
+                        <div>
+                          <Button variant="light" value={d.id}>
+                            <BsFillTrashFill />
+                          </Button>
 
-                        <Button variant="light">
-                          <BsFillPencilFill />
-                        </Button>
-                      </div>
-                    </td>
-                  </tr>
+                          <Button variant="light" value={d.id}>
+                            <BsFillPencilFill />
+                          </Button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </Container>
