@@ -11,10 +11,11 @@ import './SideNavBar.css';
 import { NavLink } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 const Home = (props) => {
-  const { setCurrentBalance, setFinalBalance } = props;
+  const { setCurrentBalance, setFinalBalance, RegisterData } = props;
   const nav = useNavigate();
   const [dis, setdis] = useState(true);
-  const LogoutHandler = () => {
+  const LogoutHandler = (e) => {
+    e.preventDefault();
     localStorage.removeItem('userLogin');
     // setCurrentBalance(0);
     // setFinalBalance(0);
@@ -26,6 +27,11 @@ const Home = (props) => {
   //   if (getlogindata) {
   //   }
   // }, [getlogindata]);
+  const loginhandler = (e) => {
+    e.preventDefault();
+    // localStorage.setsItem('regdata', JSON.stringify(RegisterData));
+    nav('./Login');
+  };
   return (
     <>
       <Container fluid>
@@ -60,7 +66,7 @@ const Home = (props) => {
                   ></Nav>
                   <Form className="d-flex">
                     {!getlogindata && (
-                      <Button variant="primary" onClick={() => nav('./Login')}>
+                      <Button variant="primary" onClick={loginhandler}>
                         Login Now
                       </Button>
                     )}

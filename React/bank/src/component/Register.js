@@ -84,6 +84,7 @@ const Register = (props) => {
       }
     }
   };
+  // localStorage.setItem('regdata', JSON.stringify(RegisterData));
   return (
     <div>
       <Row>
@@ -110,6 +111,9 @@ const Register = (props) => {
                       value={fullName}
                       onChange={(e) => setFullName(e.target.value)}
                     />
+                    {!validator.isAlphanumeric(userName) && (
+                      <h6>Enter valid user name</h6>
+                    )}
                   </Form.Group>
                   <Form.Group
                     className="mb-3"

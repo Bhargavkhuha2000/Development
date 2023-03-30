@@ -27,6 +27,7 @@ const App = () => {
       <Home
         setCurrentBalance={setCurrentBalance}
         setFinalBalance={setFinalBalance}
+        RegisterData={RegisterData}
       />
       <Routes>
         <Route path="/" />
@@ -55,6 +56,7 @@ const App = () => {
               setFinalBalance={setFinalBalance}
               CurrentBalance={CurrentBalance}
               setCurrentBalance={setCurrentBalance}
+              RegisterData={RegisterData}
             />
           }
         />
@@ -69,6 +71,7 @@ const App = () => {
               finalBalance={finalBalance}
               setFinalBalance={setFinalBalance}
               setCurrentBalance={setCurrentBalance}
+              RegisterData={RegisterData}
             />
           }
         />

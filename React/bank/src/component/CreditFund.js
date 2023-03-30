@@ -15,13 +15,13 @@ const CreditFund = (props) => {
     setFinalBalance,
     setCurrentBalance,
     CurrentBalance,
+    RegisterData,
   } = props;
   const getLoginData = JSON.parse(localStorage.getItem('userLogin'));
   const getregData = JSON.parse(localStorage.getItem('regdata'));
   const [creditAmount, setCreditAmount] = useState(0);
   const [errorMsg, setErrorMsg] = useState('');
   const [finalB, setFinalB] = useState(getLoginData[0].Balance);
-  // const CurrentBalance = finalBalance;
   const creditHandler = (e) => {
     setCreditAmount(e.target.value);
     setFinalBalance(+getLoginData[0].Balance + +e.target.value);
@@ -34,6 +34,7 @@ const CreditFund = (props) => {
         {
           id: fundManage.length,
           UserName: getLoginData[0].FullName,
+          CreditDebit: 'Credit',
           CreditAmount: +creditAmount,
           DebitAmount: '-',
           Date: date,
@@ -44,19 +45,13 @@ const CreditFund = (props) => {
       setErrorMsg('');
       setCurrentBalance(finalBalance);
       getLoginData[0].Balance = finalBalance;
-      // getregData.map((d) =>
-      //   d.UserName !== getLoginData[0].UserName
-      //     ? localStorage.setItem('regdata', JSON.stringify(d))
-      //     : localStorage.setItem('regdata', JSON.stringify(getLoginData))
-      // );
-      for (let i = 0; i < getregData.length; i++) {
-        if (getregData[i].UserName === getLoginData[0].UserName) {
-          getregData[i].Balance = getLoginData[0].Balance;
-          localStorage.setItem('regdata', JSON.stringify(getregData[i]));
-        } else {
-          localStorage.setItem('regdata', JSON.stringify(getregData[i]));
+
+      RegisterData.filter((d) => {
+        if (d.UserName === getLoginData[0].UserName) {
+          d.Balance = getLoginData[0].Balance;
         }
-      }
+      });
+      localStorage.setItem('regdata', JSON.stringify(RegisterData));
       localStorage.setItem('userLogin', JSON.stringify(getLoginData));
       console.log(fundManage);
       alert('Fund Credited Successfully');

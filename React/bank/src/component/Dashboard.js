@@ -16,10 +16,16 @@ const Dashboard = (props) => {
     CurrentBalance,
   } = props;
   const getLoginData = JSON.parse(localStorage.getItem('userLogin'));
+  const regdata = JSON.parse(localStorage.getItem('regdata'));
   let i = 0;
   const data = fundManage.filter((d) =>
-    d.UserName === getLoginData[0].FullName ? d : ''
+    d.UserName === getLoginData[0].UserName ? d : ''
   );
+  const deleteHandler = (ids) => {
+    // const index = regdata.UserName.indexof(getLoginData[0].UserName);
+    // console.log(index);
+    setFundManage(fundManage.filter((data) => data.id !== +ids));
+  };
   return (
     <div style={{ marginTop: '25px' }}>
       <h1 align="center">DashBoard</h1>
@@ -37,6 +43,7 @@ const Dashboard = (props) => {
                   <tr>
                     <th>#</th>
                     <th>User Name</th>
+                    <th>Credit/Debit</th>
                     <th>Credit Amount</th>
                     <th>Debit Amount</th>
                     <th>Date</th>
@@ -49,13 +56,18 @@ const Dashboard = (props) => {
                     <tr>
                       <th>{++i}</th>
                       <td>{d.UserName}</td>
+                      <td>{d.CreditDebit}</td>
                       <td>{d.CreditAmount}</td>
                       <td>{d.DebitAmount}</td>
                       <td>{d.Date}</td>
                       <td>{d.FinalBalance}</td>
                       <td>
                         <div>
-                          <Button variant="light" value={d.id}>
+                          <Button
+                            variant="light"
+                            value={d.id}
+                            onClick={() => deleteHandler(+d.id)}
+                          >
                             <BsFillTrashFill />
                           </Button>
 
