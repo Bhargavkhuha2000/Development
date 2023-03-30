@@ -50,8 +50,7 @@ const Login = (props) => {
         } else {
           alert('Login Successfull');
           localStorage.setItem('userLogin', JSON.stringify(userlogin));
-          // setCurrentBalance(userlogin.Balance);
-          // setFinalBalance(userlogin.Balance);
+
           redirectHome('/Dashboard');
         }
       }

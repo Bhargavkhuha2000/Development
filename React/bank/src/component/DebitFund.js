@@ -14,6 +14,7 @@ const DebitFund = (props) => {
     setFinalBalance,
     setCurrentBalance,
     CurrentBalance,
+    RegisterData,
   } = props;
   const getLoginData = JSON.parse(localStorage.getItem('userLogin'));
   const getregData = JSON.parse(localStorage.getItem('regdata'));
@@ -38,6 +39,7 @@ const DebitFund = (props) => {
           {
             id: fundManage.length,
             UserName: getLoginData[0].FullName,
+            CreditDebit: 'Debit',
             CreditAmount: '-',
             DebitAmount: debitAmount,
             Date: date,
@@ -48,20 +50,14 @@ const DebitFund = (props) => {
         setErrorMsg('');
         setCurrentBalance(finalBalance);
         getLoginData[0].Balance = finalBalance;
-        // getregData.map((d) => {
-        //   d.FullName !== getLoginData[0].FullName
-        //     ? localStorage.setItem('regdata', JSON.stringify(d))
-        //     : localStorage.setItem('regdata', JSON.stringify(getLoginData));
-        // });
-        localStorage.setItem('userLogin', JSON.stringify(getLoginData));
-        for (let i = 0; i < getregData.length; i++) {
-          if (getregData[i].UserName === getLoginData[0].UserName) {
-            getregData[i].Balance = getLoginData[0].Balance;
-            localStorage.setItem('regdata', JSON.stringify(getregData[i]));
-          } else {
-            localStorage.setItem('regdata', JSON.stringify(getregData[i]));
+        RegisterData.filter((d) => {
+          if (d.UserName === getLoginData[0].UserName) {
+            d.Balance = getLoginData[0].Balance;
           }
-        }
+        });
+        localStorage.setItem('regdata', JSON.stringify(RegisterData));
+        localStorage.setItem('userLogin', JSON.stringify(getLoginData));
+
         console.log(fundManage);
         alert('Fund Debited successfully');
       } else {
