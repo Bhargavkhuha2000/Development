@@ -5,41 +5,45 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import validator from 'validator';
 import { NavLink, useNavigate } from 'react-router-dom';
-const Login = (props) => {
+const Login = () => {
   const redirectHome = useNavigate();
-  const { setCurrentBalance, setFinalBalance } = props;
-  const { RegisterData } = props;
 
   const [email, setemail] = useState('');
   const [password, setpassword] = useState('');
-  const [errorMsg, setErrorMsg] = useState(null);
+  const [errorMsg, setErrorMsg] = useState({
+    user: '',
+    email: '',
+    password: '',
+  });
   const [loginSelecter, setLoginSelecter] = useState('Email');
 
   const loginHandler = (e) => {
     e.preventDefault();
 
-    const getregData = localStorage.getItem('regdata');
+    const getregData = JSON.parse(localStorage.getItem('regData'));
     console.log(getregData);
 
-    if (email.trim().length === 0 || password.trim().length === 0) {
-      setErrorMsg('All Filed is mendetary');
+    if (email.trim().length === 0) {
+      setErrorMsg({ email: 'please Enter Email' });
+    } else if (password.trim().length === 0) {
+      setErrorMsg({ password: 'please Enter Password' });
     } else if (loginSelecter === 'Email' && !validator.isEmail(email)) {
-      setErrorMsg('Email Not Valid');
+      setErrorMsg({ email: 'Email Not Valid' });
     } else if (
       loginSelecter === 'Email' &&
       !email.includes('@prominentpixel.com')
     ) {
-      setErrorMsg('Your Email Ends with @prominentpixel.com');
+      setErrorMsg({ email: 'Your Email Ends with @prominentpixel.com' });
     } else if (password.trim().length < 6) {
-      setErrorMsg('password atlist on 6 character');
+      setErrorMsg({ password: 'password atlist on 6 character' });
     } else {
       if (getregData.length) {
-        const userdata = JSON.parse(getregData);
-        const userlogin = userdata.filter((el, k) => {
+        // const userdata = JSON.parse(getregData);
+        const userlogin = getregData.filter((el, k) => {
           if (loginSelecter === 'Email') {
-            return el.Email === email && el.Password === password;
+            return el.email === email && el.password === password;
           } else if (loginSelecter === 'UserName') {
-            return el.UserName === email && el.Password === password;
+            return el.userName === email && el.password === password;
           }
         });
 
@@ -56,7 +60,6 @@ const Login = (props) => {
       }
     }
   };
-  localStorage.setItem('regdata', JSON.stringify(RegisterData));
   return (
     <div>
       <Row>
@@ -96,6 +99,12 @@ const Login = (props) => {
                       onChange={(event) => setemail(event.target.value)}
                       placeholder={loginSelecter}
                     />
+                    {loginSelecter === 'Email' && errorMsg.email ? (
+                      <h6 style={{ color: 'red' }}> {errorMsg.email}</h6>
+                    ) : null}
+                    {loginSelecter === 'UserName' && errorMsg.user ? (
+                      <h6 style={{ color: 'red' }}> {errorMsg.user}</h6>
+                    ) : null}
                   </Form.Group>
 
                   <Form.Group
@@ -109,12 +118,15 @@ const Login = (props) => {
                       onChange={(event) => setpassword(event.target.value)}
                       placeholder="Password"
                     />
+                    {errorMsg.password ? (
+                      <h6 style={{ color: 'red' }}> {errorMsg.password}</h6>
+                    ) : null}
                   </Form.Group>
                   <Form.Group
                     className="mb-3"
                     controlId="exampleForm.ControlInput1"
                   >
-                    <Form.Label style={{ color: 'red' }}>{errorMsg}</Form.Label>
+                    {/* <Form.Label style={{ color: 'red' }}>{errorMsg}</Form.Label> */}
                   </Form.Group>
                 </form>
               </Modal.Body>
