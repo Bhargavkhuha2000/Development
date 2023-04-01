@@ -9,6 +9,7 @@ import validator from 'validator';
 import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 const initialValues = {
+  id: 0,
   name: '',
   email: '',
   userName: '',
@@ -68,14 +69,15 @@ const Register = () => {
       validate: validates,
       onSubmit: (value, { resetForm }) => {
         const data = JSON.parse(localStorage.getItem('regData'));
-
         if (!data) {
+          value.id = 0;
           localStorage.setItem('regData', JSON.stringify([value]));
           console.log(value);
           resetForm({ value: '' });
           alert('Your Account have be created');
           nav('/Login');
         } else {
+          value.id = data.length;
           let isFound = false;
           for (let i = 0; i < data.length; i++) {
             if (data[i].email === value.email) {

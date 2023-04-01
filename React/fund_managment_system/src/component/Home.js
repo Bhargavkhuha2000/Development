@@ -13,8 +13,14 @@ import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
   const nav = useNavigate();
+  const getLoginData = JSON.parse(localStorage.getItem('userLogin'));
   const loginHandler = (e) => {
     e.preventDefault();
+    nav('./Login');
+  };
+  const logoutHandle = (e) => {
+    e.preventDefault();
+    localStorage.removeItem('userLogin');
     nav('./Login');
   };
   return (
@@ -24,21 +30,25 @@ const Home = () => {
           <Col>
             <Navbar bg="dark" className="navbar-fixed-top">
               <Container>
-                {/* <Navbar.Brand
-                  href="#"
-                  align="center"
-                  style={{ color: 'white' }}
-                >
-                  Welcome
-                </Navbar.Brand> */}
+                {getLoginData && (
+                  <Navbar.Brand
+                    href="#"
+                    align="center"
+                    style={{ color: 'white' }}
+                  >
+                    Welcome {getLoginData[0].name}
+                  </Navbar.Brand>
+                )}
 
-                <Navbar.Brand
-                  href="#"
-                  align="center"
-                  style={{ color: 'white' }}
-                >
-                  Fund Manage System
-                </Navbar.Brand>
+                {!getLoginData && (
+                  <Navbar.Brand
+                    href="#"
+                    align="center"
+                    style={{ color: 'white' }}
+                  >
+                    Fund Manage System
+                  </Navbar.Brand>
+                )}
                 <Navbar.Toggle aria-controls="navbarScroll" />
                 <Navbar.Collapse id="navbarScroll">
                   <Nav
@@ -47,11 +57,17 @@ const Home = () => {
                     navbarScroll
                   ></Nav>
                   <Form className="d-flex">
-                    <Button variant="primary" onClick={loginHandler}>
-                      Login Now
-                    </Button>
+                    {!getLoginData && (
+                      <Button variant="primary" onClick={loginHandler}>
+                        Login Now
+                      </Button>
+                    )}
 
-                    {/* <Button variant="primary">Logout</Button> */}
+                    {getLoginData && (
+                      <Button variant="primary" onClick={logoutHandle}>
+                        Logout
+                      </Button>
+                    )}
                   </Form>
                 </Navbar.Collapse>
               </Container>
@@ -61,11 +77,13 @@ const Home = () => {
         <Row>
           <Col>
             <div className="sidebar">
-              <>
-                <NavLink to="/DashBoard">Dashboard</NavLink>
-                <NavLink to="/CreditFund">Credit Fund</NavLink>
-                <NavLink to="/DebitFund">Debit Fund</NavLink>
-              </>
+              {getLoginData && (
+                <>
+                  <NavLink to="/DashBoard">Dashboard</NavLink>
+                  <NavLink to="/CreditAmount">Credit Fund</NavLink>
+                  <NavLink to="/DebitFund">Debit Fund</NavLink>
+                </>
+              )}
             </div>
           </Col>
         </Row>
