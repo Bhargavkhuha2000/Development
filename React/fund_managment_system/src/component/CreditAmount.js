@@ -10,7 +10,7 @@ import { NavLink } from 'react-router-dom';
 const CreditAmount = (props) => {
   const { fundData, setFundData } = props;
   const getLoginData = JSON.parse(localStorage.getItem('userLogin'));
-  const getregData = JSON.parse(localStorage.getItem('regdata'));
+  const getregData = JSON.parse(localStorage.getItem('regData'));
   const [creditAmount, setCreditAmount] = useState(0);
   const [errorMsg, setErrorMsg] = useState('');
   const [finalBalance, setFinalBalance] = useState(getLoginData[0].balance);
@@ -28,7 +28,7 @@ const CreditAmount = (props) => {
       setFundData([
         ...fundData,
         {
-          id: fundData.length,
+          id: fundData.length + 1,
           UserName: getLoginData[0].name,
           CurrentBalance: getLoginData[0].balance,
           CreditDebit: 'Credit',
@@ -37,18 +37,38 @@ const CreditAmount = (props) => {
           FinalBalance: +finalBalance,
         },
       ]);
+
       setCreditAmount(0);
       setErrorMsg('');
+      getLoginData[0].data.push({
+        id: fundData.length + 1,
+        UserName: getLoginData[0].name,
+        CurrentBalance: getLoginData[0].balance,
+        CreditDebit: 'Credit',
+        CreditDebitAmount: +creditAmount,
+        Date: date,
+        FinalBalance: +finalBalance,
+      });
       getLoginData[0].balance = finalBalance;
 
-      // RegisterData.filter((d) => {
-      //   if (d.UserName === getLoginData[0].name) {
-      //     d.Balance = getLoginData[0].balance;
-      //   }
-      // });
-      // localStorage.setItem('regdata', JSON.stringify(RegisterData));
+      getregData.map((d) =>
+        d.id === getLoginData[0].id ? (d.balance = getLoginData[0].balance) : d
+      );
+      getregData.map((d) =>
+        d.id === getLoginData[0].id
+          ? d.data.push({
+              id: fundData.length + 1,
+              UserName: getLoginData[0].name,
+              CurrentBalance: getLoginData[0].balance,
+              CreditDebit: 'Credit',
+              CreditDebitAmount: +creditAmount,
+              Date: date,
+              FinalBalance: +finalBalance,
+            })
+          : d
+      );
+      localStorage.setItem('regData', JSON.stringify(getregData));
       localStorage.setItem('userLogin', JSON.stringify(getLoginData));
-      // console.log(fundManage);
       alert('Fund Credited Successfully');
     } else if (creditAmount === 0) {
       setErrorMsg('zero is not credited');

@@ -10,12 +10,14 @@ import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 const initialValues = {
   id: 0,
+  user: '',
   name: '',
   email: '',
   userName: '',
   balance: '',
   password: '',
   confirmPassword: '',
+  data: [],
 };
 const Register = () => {
   const nav = useNavigate();
@@ -23,6 +25,11 @@ const Register = () => {
     user: '',
     email: '',
   });
+  const [select, setSelect] = useState('User');
+  const current = new Date();
+  const date = `${current.getDate()}/${
+    current.getMonth() + 1
+  }/${current.getFullYear()}`;
   const validates = (value) => {
     const errors = {};
     if (value.name.trim().length === 0) {
@@ -71,6 +78,17 @@ const Register = () => {
         const data = JSON.parse(localStorage.getItem('regData'));
         if (!data) {
           value.id = 0;
+          value.user = select;
+          value.data = [];
+          value.data.push({
+            id: 0,
+            UserName: value.name,
+            CurrentBalance: 0,
+            CreditDebit: 'Credit',
+            CreditDebitAmount: value.balance,
+            Date: date,
+            FinalBalance: +value.balance,
+          });
           localStorage.setItem('regData', JSON.stringify([value]));
           console.log(value);
           resetForm({ value: '' });
@@ -78,6 +96,7 @@ const Register = () => {
           nav('/Login');
         } else {
           value.id = data.length;
+
           let isFound = false;
           for (let i = 0; i < data.length; i++) {
             if (data[i].email === value.email) {
@@ -92,6 +111,17 @@ const Register = () => {
             }
           }
           if (isFound === false) {
+            value.user = select;
+            value.data = [];
+            value.data.push({
+              id: 0,
+              UserName: value.name,
+              CurrentBalance: 0,
+              CreditDebit: 'Credit',
+              CreditDebitAmount: value.balance,
+              Date: date,
+              FinalBalance: +value.balance,
+            });
             localStorage.setItem('regData', JSON.stringify([...data, value]));
             console.log(value);
             resetForm({ value: '' });
@@ -123,12 +153,12 @@ const Register = () => {
                   >
                     <Form.Select
                       aria-label="Default select example"
-                      //   value={loginSelecter}
-                      //   onChange={(e) => setLoginSelecter(e.target.value)}
+                      value={select}
+                      onChange={(e) => setSelect(e.target.value)}
+                      onBlur={handleBlur}
                     >
-                      <option value="">---Select User---</option>
-                      <option value="Email">User</option>
-                      <option value="UserName">Admin</option>
+                      <option value="User">User</option>
+                      <option value="Admin">Admin</option>
                     </Form.Select>
                   </Form.Group>
                   <Form.Group
