@@ -54,6 +54,19 @@ const Login = () => {
         } else {
           alert('Login Successfull');
           localStorage.setItem('userLogin', JSON.stringify(userlogin));
+          const getLoginData = JSON.parse(localStorage.getItem('userLogin'));
+          if (getLoginData[0].user === 'Admin') {
+            const data = getregData.filter((d) => {
+              if (d.user === 'User') {
+                return d;
+              }
+            });
+            console.log(data);
+            getLoginData[0].data = [];
+            getLoginData[0].data.push(data);
+            localStorage.setItem('data', JSON.stringify(data));
+            localStorage.setItem('userLogin', JSON.stringify(userlogin));
+          }
 
           redirectHome('/Dashboard');
         }
