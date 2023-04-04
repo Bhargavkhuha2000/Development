@@ -10,23 +10,62 @@ const DebitFund = (props) => {
   const { fundData, setFundData } = props;
   const getLoginData = JSON.parse(localStorage.getItem('userLogin'));
   const getregData = JSON.parse(localStorage.getItem('regData'));
+  const AdminData = JSON.parse(localStorage.getItem('data'));
   const [debitAmount, setDebitAmount] = useState(0);
   const [errorMsg, setErrorMsg] = useState('');
-  const [finalBalance, setFinalBalance] = useState(getLoginData[0].balance);
+  const [isDis, setIsDis] = useState(true);
+  const [select, setLoginSelecter] = useState('');
+  const [data, setdata] = useState('');
+  const [finalBalance, setFinalBalance] = useState('');
   const current = new Date();
   const date = `${current.getDate()}/${
     current.getMonth() + 1
   }/${current.getFullYear()}`;
   const debitHandler = (e) => {
     setDebitAmount(e.target.value);
-    setFinalBalance(+getLoginData[0].balance - +e.target.value);
+    if (getLoginData[0].user === 'Admin') {
+      setFinalBalance(data.balance - +e.target.value);
+    }
+    if (getLoginData[0].user === 'User') {
+      setFinalBalance(+getLoginData[0].balance - +e.target.value);
+    }
   };
+  const username = [];
+  if (getLoginData[0].user === 'Admin') {
+    AdminData.map((d) => {
+      username.push(d.userName);
+    });
+  }
+  const options = [{ value: '', name: '-- Select User -- ' }];
+  for (let i = 0; i < username.length; i++) {
+    options.push({ value: username[i], name: username[i] });
+  }
+  console.log(options);
   const debitClickHandler = (e) => {
     e.preventDefault();
-    if (debitAmount > 0 && getLoginData[0].balance >= debitAmount) {
-      setFundData([
-        ...fundData,
-        {
+    let data;
+    if (getLoginData[0].user === 'Admin') {
+      data = AdminData.find((d) => d.userName === select);
+    } else if (getLoginData[0].user === 'User') {
+      data = getLoginData[0];
+    }
+    if (debitAmount > 0 && data.balance >= debitAmount) {
+      if (getLoginData[0].user === 'User') {
+        setFundData([
+          ...fundData,
+          {
+            id: fundData.length + 1,
+            UserName: getLoginData[0].name,
+            CurrentBalance: getLoginData[0].balance,
+            CreditDebit: 'Debit',
+            CreditDebitAmount: +debitAmount,
+            Date: date,
+            FinalBalance: +finalBalance,
+          },
+        ]);
+        setDebitAmount(0);
+        setErrorMsg('');
+        getLoginData[0].data.push({
           id: fundData.length + 1,
           UserName: getLoginData[0].name,
           CurrentBalance: getLoginData[0].balance,
@@ -34,54 +73,93 @@ const DebitFund = (props) => {
           CreditDebitAmount: +debitAmount,
           Date: date,
           FinalBalance: +finalBalance,
-        },
-      ]);
-      setDebitAmount(0);
-      setErrorMsg('');
-      getLoginData[0].data.push({
-        id: fundData.length + 1,
-        UserName: getLoginData[0].name,
-        CurrentBalance: getLoginData[0].balance,
-        CreditDebit: 'Debit',
-        CreditDebitAmount: +debitAmount,
-        Date: date,
-        FinalBalance: +finalBalance,
-      });
-      getLoginData[0].balance = finalBalance;
+        });
+        getLoginData[0].balance = finalBalance;
 
-      getregData.map((d) =>
-        d.id === getLoginData[0].id ? (d.balance = getLoginData[0].balance) : d
-      );
-      getregData.map((d) =>
-        d.id === getLoginData[0].id
-          ? d.data.push({
-              id: fundData.length + 1,
-              UserName: getLoginData[0].name,
-              CurrentBalance: getLoginData[0].balance,
-              CreditDebit: 'Debit',
-              CreditDebitAmount: +debitAmount,
-              Date: date,
-              FinalBalance: +finalBalance,
-            })
-          : d
-      );
-      localStorage.setItem('regData', JSON.stringify(getregData));
-      localStorage.setItem('userLogin', JSON.stringify(getLoginData));
-      getLoginData[0].balance = finalBalance;
+        getregData.map((d) =>
+          d.id === getLoginData[0].id
+            ? (d.balance = getLoginData[0].balance)
+            : d
+        );
+        getregData.map((d) =>
+          d.id === getLoginData[0].id
+            ? d.data.push({
+                id: fundData.length + 1,
+                UserName: getLoginData[0].name,
+                CurrentBalance: getLoginData[0].balance,
+                CreditDebit: 'Debit',
+                CreditDebitAmount: +debitAmount,
+                Date: date,
+                FinalBalance: +finalBalance,
+              })
+            : d
+        );
+        localStorage.setItem('regData', JSON.stringify(getregData));
+        localStorage.setItem('userLogin', JSON.stringify(getLoginData));
+        getLoginData[0].balance = finalBalance;
 
-      getregData.map((d) =>
-        d.userName === getLoginData[0].name
-          ? (d.balance = getLoginData[0].balance)
-          : d
-      );
-      localStorage.setItem('regData', JSON.stringify(getregData));
-      localStorage.setItem('userLogin', JSON.stringify(getLoginData));
-      // console.log(fundManage);
-      alert('Fund Debited Successfully');
+        getregData.map((d) =>
+          d.userName === getLoginData[0].name
+            ? (d.balance = getLoginData[0].balance)
+            : d
+        );
+        localStorage.setItem('regData', JSON.stringify(getregData));
+        localStorage.setItem('userLogin', JSON.stringify(getLoginData));
+
+        alert('Fund Debited Successfully');
+      } else if (getLoginData[0].user === 'Admin') {
+        const data = AdminData.find((d) => d.userName === select);
+        AdminData.map((d) =>
+          d.userName === select
+            ? d.data.push({
+                id: data.data.length,
+                UserName: data.name,
+                CurrentBalance: data.balance,
+                CreditDebit: 'Debit',
+                CreditDebitAmount: +debitAmount,
+                Date: date,
+                FinalBalance: +finalBalance,
+              })
+            : d
+        );
+        getregData.map((d) =>
+          d.userName === select
+            ? d.data.push({
+                id: data.data.length,
+                UserName: data.name,
+                CurrentBalance: data.balance,
+                CreditDebit: 'Debit',
+                CreditDebitAmount: +debitAmount,
+                Date: date,
+                FinalBalance: +finalBalance,
+              })
+            : d
+        );
+
+        getregData.map((d) =>
+          d.userName === select ? (d.balance = finalBalance) : d
+        );
+        AdminData.map((d) =>
+          d.userName === select ? (d.balance = finalBalance) : d
+        );
+        alert('Fund Debited Successfully');
+        localStorage.setItem('regData', JSON.stringify(getregData));
+        localStorage.setItem('data', JSON.stringify(AdminData));
+      }
     } else if (debitAmount < 0) {
       setErrorMsg('Nagative value is not valid');
-    } else if (getLoginData[0].balance <= debitAmount) {
-      setErrorMsg('debit amount is not greater than current balance');
+    }
+  };
+  const Selecterhandler = (e) => {
+    setLoginSelecter(e.target.value);
+
+    if (e.target.value !== '') {
+      setIsDis(false);
+      const id = AdminData.findIndex((d) => d.userName === e.target.value);
+      setdata(AdminData[id]);
+    }
+    if (e.target.value === '') {
+      setIsDis(true);
     }
   };
   return (
@@ -104,11 +182,23 @@ const DebitFund = (props) => {
                     controlId="exampleForm.ControlInput1"
                   >
                     <Form.Label>User Name</Form.Label>
-                    <Form.Control
-                      type="text"
-                      disabled={true}
-                      placeholder={getLoginData[0].name}
-                    />
+                    {getLoginData[0].user === 'User' && (
+                      <Form.Control
+                        type="text"
+                        disabled={true}
+                        placeholder={getLoginData[0].name}
+                      />
+                    )}
+                    {getLoginData[0].user === 'Admin' && (
+                      <Form.Select
+                        aria-label="Default select example"
+                        onChange={Selecterhandler}
+                      >
+                        {options.map((option) => (
+                          <option value={option.value}>{option.name}</option>
+                        ))}
+                      </Form.Select>
+                    )}
                   </Form.Group>
                   <Form.Group
                     className="mb-3"
@@ -118,7 +208,11 @@ const DebitFund = (props) => {
                     <Form.Control
                       type="number"
                       disabled={true}
-                      placeholder={getLoginData[0].balance}
+                      placeholder={
+                        (getLoginData[0].user === 'User' &&
+                          getLoginData[0].balance) ||
+                        (getLoginData[0].user === 'Admin' && data.balance)
+                      }
                     />
                   </Form.Group>
 
@@ -130,6 +224,10 @@ const DebitFund = (props) => {
                     <Form.Control
                       type="number"
                       min="0"
+                      disabled={
+                        (getLoginData[0].user === 'Admin' && isDis) ||
+                        (getLoginData[0].user === 'User' && false)
+                      }
                       value={debitAmount}
                       onChange={debitHandler}
                       placeholder="Enter Debit Amount"

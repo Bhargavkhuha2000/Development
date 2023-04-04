@@ -5,18 +5,20 @@ import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
 import { BsFillTrashFill } from 'react-icons/bs';
 import { BsFillPencilFill } from 'react-icons/bs';
-import Form from 'react-bootstrap/Form';
-// import Button from 'react-bootstrap/Button';
+
+import AdminDashboard from './AdminDashboard';
 
 const Dashboard = (props) => {
   const { fundData } = props;
   const [updateText, setUpdateText] = useState('');
   const getLoginData = JSON.parse(localStorage.getItem('userLogin'));
+
   const regdata = JSON.parse(localStorage.getItem('regData'));
   const [isUpdate, setIsUpdate] = useState(false);
   const [isShow, setIsShow] = useState(true);
   const [updateChange, setUpdateChange] = useState('');
   let i = 0;
+
   const { data } = getLoginData[0];
 
   const deleteHandler = (ids) => {
@@ -65,14 +67,11 @@ const Dashboard = (props) => {
     localStorage.setItem('userLogin', JSON.stringify(getLoginData));
     localStorage.setItem('regData', JSON.stringify(regData));
 
-    // data = finaldata;
     window.location.reload();
   };
   const updateClick = (ids) => {
     setIsUpdate(true);
     const { data } = getLoginData[0];
-    // const record = ;
-    // const id = data.findIndex((d) => d.id === ids);
     setUpdateText(data.find((d) => d.id === ids));
   };
   const updateHandle = (ids) => {
@@ -118,16 +117,15 @@ const Dashboard = (props) => {
     localStorage.setItem('userLogin', JSON.stringify(getLoginData));
     localStorage.setItem('regData', JSON.stringify(regData));
 
-    // data = finaldata;
     setIsUpdate(false);
     window.location.reload();
   };
   const datas = JSON.parse(localStorage.getItem('userLogin'));
   const firstData = getLoginData[0].data[0].id;
   return (
-    <div style={{ marginTop: '25px' }}>
+    <div style={{ marginTop: '25px', overflow: 'scroll', height: '800px' }}>
       <h1 align="center">DashBoard</h1>
-      {getLoginData && (
+      {getLoginData[0].user === 'User' && getLoginData && (
         <h4 style={{ marginLeft: '270px' }}>
           Available Balance :{getLoginData[0].balance}
         </h4>
@@ -136,61 +134,66 @@ const Dashboard = (props) => {
         <Col>
           <Col>
             <Container>
-              <table className="table">
-                <thead className="thead-dark">
-                  <tr>
-                    <th>#</th>
-                    <th>User Name</th>
-                    <th>Current Balance</th>
-                    <th>Credit/Debit</th>
-                    <th>Credit/Debit Amount</th>
-                    <th>Date</th>
-                    <th>Final Balance</th>
-                    <th>Update | Delete</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {datas[0].data.map((d) => (
-                    <tr>
-                      <th>{++i}</th>
-                      <td>{d.UserName}</td>
-                      <td>{d.CurrentBalance}</td>
-                      <td>{d.CreditDebit}</td>
-                      <td>{d.CreditDebitAmount}</td>
-                      <td>{d.Date}</td>
-                      <td>{d.FinalBalance}</td>
-                      <td>
-                        <div>
-                          <Button
-                            variant="light"
-                            value={d.id}
-                            onClick={() => updateClick(+d.id)}
-                          >
-                            <BsFillPencilFill />
-                          </Button>
-
-                          {firstData !== d.id && (
-                            <>
-                              <a>|</a>
+              {getLoginData[0].user === 'User' && (
+                <table className="table">
+                  <>
+                    <thead className="thead-dark">
+                      <tr>
+                        <th>#</th>
+                        <th>User Name</th>
+                        <th>Current Balance</th>
+                        <th>Credit/Debit</th>
+                        <th>Credit/Debit Amount</th>
+                        <th>Date</th>
+                        <th>Final Balance</th>
+                        <th>Update | Delete</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {datas[0].data.map((d) => (
+                        <tr>
+                          <th>{++i}</th>
+                          <td>{d.UserName}</td>
+                          <td>{d.CurrentBalance}</td>
+                          <td>{d.CreditDebit}</td>
+                          <td>{d.CreditDebitAmount}</td>
+                          <td>{d.Date}</td>
+                          <td>{d.FinalBalance}</td>
+                          <td>
+                            <div>
                               <Button
                                 variant="light"
                                 value={d.id}
-                                onClick={() => deleteHandler(+d.id)}
+                                onClick={() => updateClick(+d.id)}
                               >
-                                <BsFillTrashFill />
+                                <BsFillPencilFill />
                               </Button>
-                            </>
-                          )}
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+
+                              {firstData !== d.id && (
+                                <>
+                                  <a>|</a>
+                                  <Button
+                                    variant="light"
+                                    value={d.id}
+                                    onClick={() => deleteHandler(+d.id)}
+                                  >
+                                    <BsFillTrashFill />
+                                  </Button>
+                                </>
+                              )}
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </>
+                </table>
+              )}
             </Container>
           </Col>
         </Col>
       </Row>
+      {getLoginData[0].user === 'Admin' && <AdminDashboard />}
       {isUpdate && (
         <div style={{ marginLeft: '270px' }}>
           <table className="table">
@@ -225,6 +228,7 @@ const Dashboard = (props) => {
                 <button onClick={() => updateHandle(+updateText.id)}>
                   update
                 </button>
+                <button onClick={() => setIsUpdate(false)}>Close</button>
               </td>
             </tr>
           </table>
