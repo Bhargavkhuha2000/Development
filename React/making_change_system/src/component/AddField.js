@@ -14,6 +14,7 @@ const AddField = () => {
   const [Total, setTotal] = useState(0);
   const [isClick, setIsClick] = useState(false);
   const [isChangeShow, setChangeShow] = useState(false);
+  const [isfinalShow, setIsFinalShow] = useState(false);
   const [TotalBill, setTotalBill] = useState('');
   const [TotalGiven, setTotalGiven] = useState('');
   const [Change, setChange] = useState('');
@@ -47,6 +48,9 @@ const AddField = () => {
       d.id = i;
       i++;
     });
+    datas.sort((a, b) => {
+      return a.Note - b.Note;
+    });
     console.log(datas);
     setData(datas);
     let TotalData = 0;
@@ -61,16 +65,17 @@ const AddField = () => {
     setChangeShow(true);
   };
   const submitHandle = () => {
-    if (TotalBill === '') {
+    if (+TotalBill === '') {
       alert('Please enter Total Bill Amount');
-    } else if (TotalGiven === '') {
+    } else if (+TotalGiven === '') {
       alert('Please Enter Given Amount');
-    } else if (TotalBill > TotalGiven) {
+    } else if (+TotalBill > +TotalGiven) {
       console.log('Total Given', TotalGiven);
       console.log('Total Bill', TotalBill);
+      console.log([+TotalBill, +TotalGiven]);
       alert('Your bill is greater than given money');
     } else {
-      const changes = TotalGiven - TotalBill;
+      const changes = +TotalGiven - +TotalBill;
       console.log(changes);
       const datas = [...data];
       let note = [];
@@ -82,12 +87,51 @@ const AddField = () => {
       console.log(note);
       console.log(noOfNote);
       let chang = changes;
-      for (let i = 0; i < note.length; i++) {
-        console.log(`${note[i]} notes is ${chang / note[i]}`);
-        chang = chang % note[i];
+      let finalnote = [];
+      for (let i = note.length - 1; i >= 0; i--) {
+        if (chang / note[i] > noOfNote[i]) {
+          const n = note[i] * noOfNote[i];
+          finalnote.push(`${note[i]} notes is ${noOfNote[i]}`);
+          noOfNote[i] -= noOfNote[i];
+          chang -= n;
+        } else if (+chang / note[i] <= +noOfNote[i]) {
+          console.log();
+          finalnote.push(`${note[i]} notes is ${Math.floor(chang / note[i])}`);
+          noOfNote[i] = noOfNote[i] - Math.floor(chang / note[i]);
+          chang = +chang % note[i];
+        }
+      }
+      if (+chang > 0) {
+        alert('fund is not available');
+        console.log(chang);
+
+        // console.log(`chang ${chang}, noOfNote ${noOfNote} `);
+      } else {
+        console.log(`chang ${chang}, noOfNote ${noOfNote} `);
+        let i = 0;
+        let TotalData = 0;
+        datas.map((d) => {
+          d.NumberOf = noOfNote[i];
+          d.Total = d.Note * noOfNote[i];
+          TotalData += d.Total;
+          i++;
+        });
+        console.log(datas);
+        setData(datas);
+        setChange(finalnote);
+        setTotal(TotalData);
+        setTotalBill('');
+        setTotalGiven('');
+        setChangeShow(false);
+        setIsFinalShow(true);
+        console.log(finalnote);
       }
     }
-    // setChange()
+  };
+  const clearHandle = () => {
+    setChangeShow(false);
+    setIsFinalShow(false);
+    setIsClick(false);
   };
   return (
     <div align="center" style={{ marginTop: '20px' }}>
@@ -198,7 +242,7 @@ const AddField = () => {
                       type="number"
                       style={{ padding: '10px 20px', fontSize: '15px' }}
                       value={TotalBill}
-                      onChange={(e) => setTotalBill(e.target.value)}
+                      onChange={(e) => setTotalBill(+e.target.value)}
                     />
                   </td>
                   <td>
@@ -209,7 +253,7 @@ const AddField = () => {
                       type="number"
                       style={{ padding: '10px 20px', fontSize: '15px' }}
                       value={TotalGiven}
-                      onChange={(e) => setTotalGiven(e.target.value)}
+                      onChange={(e) => setTotalGiven(+e.target.value)}
                     />
                   </td>
                   <td>
@@ -223,6 +267,10 @@ const AddField = () => {
           </div>
         </>
       )}
+      {isfinalShow && Change.map((d) => <p>{d}</p>)}
+      <button className="button button2" onClick={clearHandle}>
+        Clear
+      </button>
     </div>
   );
 };
