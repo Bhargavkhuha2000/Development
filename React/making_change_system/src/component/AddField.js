@@ -48,24 +48,24 @@ const AddField = () => {
     const datas = [...data];
     console.log(datas);
     let isFound = false;
-    for (let i = 0; i < datas.length; i++) {
-      if (datas[i].Total % datas[i].Note === 0) {
-        datas[i].Total = +datas[i].Total;
-        datas[i].Note = +datas[i].Note;
-        datas[i].NumberOf = datas[i].Total / datas[i].Note;
+    for (const element of datas) {
+      if (element.Total % element.Note === 0) {
+        element.Total = +element.Total;
+        element.Note = +element.Note;
+        element.NumberOf = element.Total / element.Note;
       } else if (
-        datas[i].NoteName === '' ||
-        datas[i].Note === '' ||
-        datas[i].Total === ''
+        element.NoteName === '' ||
+        element.Note === '' ||
+        element.Total === ''
       ) {
         alert(`Empty field is not allow`);
         isFound = true;
         break;
-      } else if (datas[i].Total % datas[i].note !== 0) {
-        datas[i].Total = 0;
-        datas[i].NumberOf = 0;
+      } else if (element.Total % element.Note !== 0) {
+        element.Total = 0;
+        element.NumberOf = 0;
         setIsClick(false);
-        alert(`${datas[i].Note} notes Total is wrong`);
+        alert(`${element.Note} notes Total is wrong`);
         isFound = true;
         break;
       }
