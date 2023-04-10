@@ -127,42 +127,125 @@ const AddField = () => {
       let finalnote = [];
       for (let i = note.length - 1; i >= 0; i--) {
         if (note[i] > 0) {
-          if (chang / note[i] > noOfNote[i]) {
+          if (chang / note[i] >= noOfNote[i]) {
             const n = note[i] * noOfNote[i];
-            finalnote.push(`${note[i]} notes is ${noOfNote[i]}`);
-            noOfNote[i] -= noOfNote[i];
-            chang -= n;
-          } else if (+chang / note[i] <= +noOfNote[i]) {
+            finalnote.push({ Note: note[i], manyNote: +noOfNote[i] });
+            noOfNote[i] -= +noOfNote[i];
+            chang -= +n;
+          } else if (+chang / note[i] < +noOfNote[i]) {
             console.log();
-            finalnote.push(
-              `${note[i]} notes is ${Math.floor(chang / note[i])}`
-            );
-            noOfNote[i] = (noOfNote[i] - Math.floor(chang / note[i])).toFixed(
+            finalnote.push({
+              Note: note[i],
+              manyNote: Math.floor(+chang / note[i]),
+            });
+            noOfNote[i] = (+noOfNote[i] - Math.floor(+chang / note[i])).toFixed(
               2
             );
             chang = (+chang % note[i]).toFixed(2);
           }
         } else if (note[i] < 0) {
-          if (chang / note[i] > noOfNote[i]) {
-            const n = (note[i] * noOfNote[i]).toFixed(2);
-            finalnote.push(`${note[i]} notes is ${noOfNote[i]}`);
-            noOfNote[i] -= noOfNote[i];
-            chang -= n;
-          } else if ((+chang / note[i]).toFixed(2) <= +noOfNote[i]) {
+          if (chang / note[i] >= noOfNote[i]) {
+            const n = (+note[i] * noOfNote[i]).toFixed(2);
+            finalnote.push({ Note: note[i], manyNote: noOfNote[i] });
+            noOfNote[i] -= +noOfNote[i];
+            chang -= +n;
+          } else if ((+chang / note[i]).toFixed(2) < +noOfNote[i]) {
             console.log();
-            finalnote.push(
-              `${note[i]} notes is ${(chang / note[i]).toFixed(2)}`
-            );
-            noOfNote[i] = (noOfNote[i] - chang / note[i]).toFixed(2);
+            finalnote.push({
+              Note: note[i],
+              manyNote: (+chang / note[i]).toFixed(2),
+            });
+            noOfNote[i] = +(noOfNote[i] - chang / note[i]).toFixed(2);
             chang = (+chang % note[i]).toFixed(2);
           }
         }
       }
+      console.log(noOfNote);
+      console.log(finalnote);
       if (+chang > 0) {
         alert('fund is not available');
         console.log(chang);
+        for (let i = 0; i < note.length; i++) {
+          let temp = 0;
+          let isFound = false;
+          finalnote.find((d) => {
+            if (d.Note === note[i]) {
+              if (d.manyNote > 0) {
+                // chang += note[i] * d.manyNote;
+                // temp = chang;
+                // noOfNote[i] += d.manyNote;
+                // d.manyNote = 0;
+                chang += note[i];
+                temp = chang;
+                noOfNote[i] += 1;
+                d.manyNote -= 1;
+              } else if (d.manyNote == 0) {
+                isFound = true;
+              }
+            }
+          });
+          if (isFound === true) {
+            continue;
+          }
+          for (let k = i - 1; k >= 0; k--) {
+            finalnote.filter((d) => {
+              if (d.Note === note[k]) {
+                // console.log(d);
+                if (d.manyNote > 0) {
+                  chang += d.Note * d.manyNote;
+                  temp = chang;
+                  noOfNote[k] += d.manyNote;
+                  // console.log(d.manyNote);
+                  d.manyNote = 0;
+                  // console.log(d);
+                }
+              }
+            });
+          }
+          let isComplete = false;
+          for (let j = i - 1; j >= 0; j--) {
+            if (temp > 0) {
+              if (temp / note[j] >= noOfNote[j]) {
+                finalnote.filter((d) => {
+                  if (d.Note === note[j]) {
+                    d.manyNote = Math.floor(noOfNote[j]);
+                    // console.slog('temp', temp);
+                    // console.log(d.manyNote);
 
-        // console.log(`chang ${chang}, noOfNote ${noOfNote} `);
+                    temp = Math.floor(temp % note[j]);
+                    console.log(temp - note[j] * d.manyNote);
+                    if (temp - note[j] * d.manyNote == 0) {
+                      isComplete = true;
+                    }
+                  }
+                });
+                if (isComplete === true) {
+                  console.log('sucsess');
+                  break;
+                }
+              } else if (temp / note[j] < noOfNote[j]) {
+                finalnote.filter((d) => {
+                  if (d.Note === note[j]) {
+                    d.manyNote = Math.floor(temp / note[j]);
+                    temp = Math.floor(temp % note[j]);
+                    // console.log(temp - d.manyNote * note[j]);
+                    // console.log(temp % note[j]);
+                    if (temp - (temp % note[j]) == 0) {
+                      isComplete = true;
+                    }
+                  }
+                });
+                if (isComplete === true) {
+                  console.log('sucsess');
+                  break;
+                }
+              }
+            }
+          }
+          if (isComplete === true) {
+            break;
+          }
+        }
       } else {
         console.log(`chang ${chang}, noOfNote ${noOfNote} `);
         let i = 0;
@@ -336,7 +419,19 @@ const AddField = () => {
           </div>
         </>
       )}
-      {isfinalShow && Change.map((d) => <p>{d}</p>)}
+      {isfinalShow && (
+        <table>
+          {Change.map((d) => (
+            <tr>
+              <td>{d.Note}</td>
+              <td>X</td>
+              <td>{d.manyNote}</td>
+              <td>=</td>
+              <td>{d.Note * d.manyNote}</td>
+            </tr>
+          ))}
+        </table>
+      )}
       <button className="button button2" onClick={clearHandle}>
         Clear
       </button>
