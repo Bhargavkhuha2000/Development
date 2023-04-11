@@ -136,9 +136,9 @@ const AddField = () => {
             console.log();
             finalnote.push({
               Note: note[i],
-              manyNote: Math.floor(+chang / note[i]),
+              manyNote: +Math.floor(+chang / note[i]),
             });
-            noOfNote[i] = (+noOfNote[i] - Math.floor(+chang / note[i])).toFixed(
+            noOfNote[i] = +(noOfNote[i] - Math.floor(+chang / note[i])).toFixed(
               2
             );
             chang = (+chang % note[i]).toFixed(2);
@@ -146,14 +146,14 @@ const AddField = () => {
         } else if (note[i] < 0) {
           if (chang / note[i] >= noOfNote[i]) {
             const n = (+note[i] * noOfNote[i]).toFixed(2);
-            finalnote.push({ Note: note[i], manyNote: noOfNote[i] });
+            finalnote.push({ Note: note[i], manyNote: +noOfNote[i] });
             noOfNote[i] -= +noOfNote[i];
             chang -= +n;
           } else if ((+chang / note[i]).toFixed(2) < +noOfNote[i]) {
             console.log();
             finalnote.push({
               Note: note[i],
-              manyNote: (+chang / note[i]).toFixed(2),
+              manyNote: +(+chang / note[i]).toFixed(2),
             });
             noOfNote[i] = +(noOfNote[i] - chang / note[i]).toFixed(2);
             chang = (+chang % note[i]).toFixed(2);
@@ -163,90 +163,150 @@ const AddField = () => {
       console.log(noOfNote);
       console.log(finalnote);
       if (+chang > 0) {
-        alert('fund is not available');
-        console.log(chang);
-        for (let i = 0; i < note.length; i++) {
-          let temp = 0;
-          let isFound = false;
-          finalnote.find((d) => {
-            if (d.Note === note[i]) {
-              if (d.manyNote > 0) {
-                // chang += note[i] * d.manyNote;
-                // temp = chang;
-                // noOfNote[i] += d.manyNote;
-                // d.manyNote = 0;
-                chang += note[i];
-                temp = chang;
-                noOfNote[i] += 1;
-                d.manyNote -= 1;
-              } else if (d.manyNote == 0) {
-                isFound = true;
-              }
-            }
-          });
-          if (isFound === true) {
-            continue;
-          }
-          for (let k = i - 1; k >= 0; k--) {
-            finalnote.filter((d) => {
-              if (d.Note === note[k]) {
-                // console.log(d);
+        console.log(note[0]);
+        if (+chang < note[0]) {
+          alert('fund not available line 167');
+        } else {
+          console.log(chang);
+          for (let i = 0; i < note.length; i++) {
+            let temp = 0;
+            let isFound = false;
+            finalnote.find((d) => {
+              if (d.Note === note[i]) {
                 if (d.manyNote > 0) {
-                  chang += d.Note * d.manyNote;
+                  chang += note[i];
                   temp = chang;
-                  noOfNote[k] += d.manyNote;
-                  // console.log(d.manyNote);
-                  d.manyNote = 0;
-                  // console.log(d);
+                  noOfNote[i] += 1;
+                  d.manyNote -= 1;
+                } else if (d.manyNote == 0) {
+                  isFound = true;
                 }
               }
             });
-          }
-          let isComplete = false;
-          for (let j = i - 1; j >= 0; j--) {
-            if (temp > 0) {
-              if (temp / note[j] >= noOfNote[j]) {
-                finalnote.filter((d) => {
-                  if (d.Note === note[j]) {
-                    d.manyNote = Math.floor(noOfNote[j]);
-                    // console.slog('temp', temp);
-                    // console.log(d.manyNote);
-
-                    temp = Math.floor(temp % note[j]);
-                    console.log(temp - note[j] * d.manyNote);
-                    if (temp - note[j] * d.manyNote == 0) {
-                      isComplete = true;
+            if (isFound === true) {
+              continue;
+            }
+            for (let k = i - 1; k >= 0; k--) {
+              finalnote.filter((d) => {
+                if (d.Note === note[k]) {
+                  if (d.manyNote > 0) {
+                    console.log(chang);
+                    if (d.Note > 0) {
+                      if (k === i - 1) {
+                        console.log('k=i ', k);
+                        chang += +d.Note * +d.manyNote;
+                        temp = +chang;
+                        noOfNote[k] += +d.manyNote;
+                        d.manyNote = 0;
+                      }
+                      console.log(k);
+                      if (k !== i - 1) {
+                        noOfNote[k] = +d.manyNote;
+                        d.manyNote = 0;
+                      }
+                    } else if (d.Note < 0) {
+                      if (k === i - 1) {
+                        chang += (+d.Note * +d.manyNote).toFixed(2);
+                        temp = chang;
+                        noOfNote[k] += +d.manyNote;
+                        d.manyNote = 0;
+                      }
+                      if (k !== i - 1) {
+                        noOfNote[k] = +d.manyNote;
+                        d.manyNote = 0;
+                      }
                     }
                   }
-                });
-                if (isComplete === true) {
-                  console.log('sucsess');
-                  break;
                 }
-              } else if (temp / note[j] < noOfNote[j]) {
-                finalnote.filter((d) => {
-                  if (d.Note === note[j]) {
-                    d.manyNote = Math.floor(temp / note[j]);
-                    temp = Math.floor(temp % note[j]);
-                    // console.log(temp - d.manyNote * note[j]);
-                    // console.log(temp % note[j]);
-                    if (temp - (temp % note[j]) == 0) {
-                      isComplete = true;
-                    }
+              });
+            }
+            let isComplete = false;
+            let index;
+            for (let j = i - 1; j >= 0; j--) {
+              const findindex = finalnote.findIndex((d) => d.Note === note[j]);
+              let { Note, manyNote } = finalnote[findindex];
+              if (Note > 0) {
+                if (temp / Note >= noOfNote[j]) {
+                  manyNote += +noOfNote[j];
+                  noOfNote[j] = 0;
+                  temp -= Math.floor(manyNote * Note);
+                  finalnote[findindex] = { Note: Note, manyNote: manyNote };
+                  if (temp === 0) {
+                    // console.log('if sucess');
+                    index = findindex;
+                    isComplete = true;
+                    break;
                   }
-                });
-                if (isComplete === true) {
-                  console.log('sucsess');
-                  break;
+                } else if (temp / Note < noOfNote[j]) {
+                  manyNote += Math.floor(temp / Note);
+                  noOfNote[j] = Math.floor(+noOfNote[j] - +manyNote);
+                  temp = Math.floor(+temp % Note);
+                  finalnote[findindex] = { Note: Note, manyNote: manyNote };
+                  if (temp === 0) {
+                    // console.log('ELSE sucess');
+                    index = findindex;
+                    isComplete = true;
+                    break;
+                  }
+                }
+              } else if (Note < 0) {
+                if (temp / Note >= noOfNote[j]) {
+                  manyNote += noOfNote[j];
+                  noOfNote[j] = 0;
+                  temp -= (manyNote * Note).toFixed(2);
+                  finalnote[findindex] = { Note: Note, manyNote: manyNote };
+                  if (temp === 0) {
+                    index = findindex;
+                    isComplete = true;
+                    break;
+                  }
+                } else if (temp / Note < noOfNote[j]) {
+                  manyNote += (temp / Note).toFixed(2);
+                  noOfNote[j] -= +manyNote;
+                  temp = (+temp % Note).toFixed(2);
+                  finalnote[findindex] = { Note: Note, manyNote: manyNote };
+                  if (temp === 0) {
+                    index = findindex;
+                    isComplete = true;
+                    break;
+                  }
                 }
               }
             }
-          }
-          if (isComplete === true) {
-            break;
+            if (isComplete === false && i === note.length - 1) {
+              alert('Exchange is not available');
+            }
+            if (isComplete === true) {
+              console.log('final index after completion ', index);
+              console.log(finalnote.length);
+              for (let a = index + 1; a < finalnote.length; a++) {
+                console.log(a);
+                finalnote[a].manyNote = 0;
+              }
+              if (index === finalnote.length - 1) {
+              }
+              // console.log('s');
+              // console.log(finalnote);
+              let i = 0;
+              let TotalData = 0;
+              datas.map((d) => {
+                d.NumberOf = noOfNote[i];
+                d.Total = (d.Note * d.NumberOf).toFixed(2);
+                TotalData += +d.Total;
+                i++;
+              });
+              setData(datas);
+              setChange(finalnote);
+              setTotal(TotalData.toFixed(2));
+              setTotalBill('');
+              setTotalGiven('');
+              setChangeShow(false);
+              setIsFinalShow(true);
+              break;
+            }
           }
         }
-      } else {
+      } else if (+chang === 0) {
         console.log(`chang ${chang}, noOfNote ${noOfNote} `);
         let i = 0;
         let TotalData = 0;
@@ -266,6 +326,8 @@ const AddField = () => {
         setChangeShow(false);
         setIsFinalShow(true);
         console.log(finalnote);
+      } else {
+        alert('Fund not available');
       }
     }
   };
@@ -369,7 +431,6 @@ const AddField = () => {
                   <td style={{ width: '20%' }}>{d.NumberOf}</td>
                   <td>=</td>
                   <td style={{ width: '20%' }}>{d.Total}</td>
-                  {console.log(d)}
                 </tr>
               ))}
             </tbody>
