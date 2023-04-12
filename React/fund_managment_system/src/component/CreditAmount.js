@@ -7,7 +7,7 @@ import Button from 'react-bootstrap/Button';
 import { NavLink } from 'react-router-dom';
 
 const CreditAmount = (props) => {
-  const { fundData, setFundData } = props;
+  const { fundData, setFundData, t } = props;
   const getLoginData = JSON.parse(localStorage.getItem('userLogin'));
   const getregData = JSON.parse(localStorage.getItem('regData'));
   const AdminData = JSON.parse(localStorage.getItem('data'));
@@ -161,7 +161,7 @@ const CreditAmount = (props) => {
           >
             <Modal.Dialog>
               <Modal.Header>
-                <Modal.Title>Credit Amount</Modal.Title>
+                <Modal.Title>{t('Credit Amount')}</Modal.Title>
               </Modal.Header>
 
               <Modal.Body>
@@ -170,7 +170,7 @@ const CreditAmount = (props) => {
                     className="mb-3"
                     controlId="exampleForm.ControlInput1"
                   >
-                    <Form.Label>User Name</Form.Label>
+                    <Form.Label>{t('User Name')}</Form.Label>
                     {getLoginData[0].user === 'User' && (
                       <Form.Control
                         type="text"
@@ -193,7 +193,7 @@ const CreditAmount = (props) => {
                     className="mb-3"
                     controlId="exampleForm.ControlInput1"
                   >
-                    <Form.Label>Available Balance</Form.Label>
+                    <Form.Label>{t('Available Balance')}</Form.Label>
                     <Form.Control
                       type="number"
                       disabled={true}
@@ -209,7 +209,7 @@ const CreditAmount = (props) => {
                     className="mb-3"
                     controlId="exampleForm.ControlInput1"
                   >
-                    <Form.Label>Credit Amount</Form.Label>
+                    <Form.Label>{t('Credit Amount')}</Form.Label>
                     <Form.Control
                       type="number"
                       min="0"
@@ -227,7 +227,7 @@ const CreditAmount = (props) => {
                     className="mb-3"
                     controlId="exampleForm.ControlInput1"
                   >
-                    <Form.Label>Final Balance</Form.Label>
+                    <Form.Label>{t('Final Balance')}</Form.Label>
                     <Form.Control
                       type="number"
                       disabled={true}
@@ -240,10 +240,10 @@ const CreditAmount = (props) => {
 
               <Modal.Footer>
                 <NavLink to="/Dashboard">
-                  <Button variant="secondary">Close</Button>
+                  <Button variant="secondary">{t('Close')}</Button>
                 </NavLink>
                 <Button variant="primary" onClick={creditClickHandler}>
-                  Credit Fund
+                  {t('Credit Fund')}
                 </Button>
               </Modal.Footer>
             </Modal.Dialog>

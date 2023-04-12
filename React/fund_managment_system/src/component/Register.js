@@ -19,7 +19,8 @@ const initialValues = {
   confirmPassword: '',
   data: [],
 };
-const Register = () => {
+const Register = (props) => {
+  const { t } = props;
   const nav = useNavigate();
   const [errorMsg, setErrorMsg] = useState({
     user: '',
@@ -142,7 +143,7 @@ const Register = () => {
           >
             <Modal.Dialog>
               <Modal.Header>
-                <Modal.Title>Register</Modal.Title>
+                <Modal.Title>{t('Register')}</Modal.Title>
               </Modal.Header>
 
               <Modal.Body style={{ overflow: 'scroll', height: '700px' }}>
@@ -157,15 +158,15 @@ const Register = () => {
                       onChange={(e) => setSelect(e.target.value)}
                       onBlur={handleBlur}
                     >
-                      <option value="User">User</option>
-                      <option value="Admin">Admin</option>
+                      <option value="User">{t('User')}</option>
+                      <option value="Admin">{t('Admin')}</option>
                     </Form.Select>
                   </Form.Group>
                   <Form.Group
                     className="mb-3"
                     controlId="exampleForm.ControlInput1"
                   >
-                    <Form.Label htmlFor="name">Name</Form.Label>
+                    <Form.Label htmlFor="name">{t('Name')}</Form.Label>
                     <Form.Control
                       type="text"
                       placeholder="Enter Name"
@@ -183,7 +184,7 @@ const Register = () => {
                     className="mb-3"
                     controlId="exampleForm.ControlInput1"
                   >
-                    <Form.Label htmlFor="email">Email</Form.Label>
+                    <Form.Label htmlFor="email">{t('Email')}</Form.Label>
                     <Form.Control
                       type="email"
                       placeholder="Enter Email"
@@ -204,7 +205,7 @@ const Register = () => {
                     className="mb-3"
                     controlId="exampleForm.ControlInput1"
                   >
-                    <Form.Label htmlFor="userName">User Name</Form.Label>
+                    <Form.Label htmlFor="userName">{t('User Name')}</Form.Label>
                     <Form.Control
                       type="text"
                       placeholder="User Name"
@@ -225,7 +226,7 @@ const Register = () => {
                     className="mb-3"
                     controlId="exampleForm.ControlInput1"
                   >
-                    <Form.Label htmlFor="balance">Balance</Form.Label>
+                    <Form.Label htmlFor="balance">{t('Balance')}</Form.Label>
                     <Form.Control
                       type="number"
                       id="balance"
@@ -244,7 +245,7 @@ const Register = () => {
                     className="mb-3"
                     controlId="exampleForm.ControlInput1"
                   >
-                    <Form.Label htmlFor="password">Password</Form.Label>
+                    <Form.Label htmlFor="password">{t('Password')}</Form.Label>
                     <Form.Control
                       type="password"
                       placeholder="Password"
@@ -264,7 +265,7 @@ const Register = () => {
                     controlId="exampleForm.ControlInput1"
                   >
                     <Form.Label htmlFor="confirmPassword">
-                      Confirm Password
+                      {t('Confirm Password')}
                     </Form.Label>
                     <Form.Control
                       type="password"
@@ -285,16 +286,16 @@ const Register = () => {
                     align="center"
                   >
                     <Button variant="primary" type="submit">
-                      Register
+                      {t('Register')}
                     </Button>
                     <NavLink to="/Login">
-                      <Button variant="secondary">Close</Button>
+                      <Button variant="secondary">{t('Close')}</Button>
                     </NavLink>
                   </Form.Group>
                 </form>
                 <p align="center">
-                  Already Register?
-                  <NavLink to="/Login"> Login Now</NavLink>
+                  {t('Already Register')}?
+                  <NavLink to="/Login"> {t('Login Now')}</NavLink>
                 </p>
               </Modal.Body>
             </Modal.Dialog>

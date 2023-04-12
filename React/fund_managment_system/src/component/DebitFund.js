@@ -7,7 +7,7 @@ import Button from 'react-bootstrap/Button';
 import { NavLink } from 'react-router-dom';
 
 const DebitFund = (props) => {
-  const { fundData, setFundData } = props;
+  const { fundData, setFundData, t } = props;
   const getLoginData = JSON.parse(localStorage.getItem('userLogin'));
   const getregData = JSON.parse(localStorage.getItem('regData'));
   const AdminData = JSON.parse(localStorage.getItem('data'));
@@ -172,7 +172,7 @@ const DebitFund = (props) => {
           >
             <Modal.Dialog>
               <Modal.Header>
-                <Modal.Title>Debit Amount</Modal.Title>
+                <Modal.Title>{t('Debit Amount')}</Modal.Title>
               </Modal.Header>
 
               <Modal.Body>
@@ -181,7 +181,7 @@ const DebitFund = (props) => {
                     className="mb-3"
                     controlId="exampleForm.ControlInput1"
                   >
-                    <Form.Label>User Name</Form.Label>
+                    <Form.Label>{t('User Name')}</Form.Label>
                     {getLoginData[0].user === 'User' && (
                       <Form.Control
                         type="text"
@@ -204,7 +204,7 @@ const DebitFund = (props) => {
                     className="mb-3"
                     controlId="exampleForm.ControlInput1"
                   >
-                    <Form.Label>Available Balance</Form.Label>
+                    <Form.Label>{t('Available Balance')}</Form.Label>
                     <Form.Control
                       type="number"
                       disabled={true}
@@ -220,7 +220,7 @@ const DebitFund = (props) => {
                     className="mb-3"
                     controlId="exampleForm.ControlInput1"
                   >
-                    <Form.Label>Debit Amount</Form.Label>
+                    <Form.Label>{t('Debit Amount')}</Form.Label>
                     <Form.Control
                       type="number"
                       min="0"
@@ -238,7 +238,7 @@ const DebitFund = (props) => {
                     className="mb-3"
                     controlId="exampleForm.ControlInput1"
                   >
-                    <Form.Label>Final Balance</Form.Label>
+                    <Form.Label>{t('Final Balance')}</Form.Label>
                     <Form.Control
                       type="number"
                       disabled={true}
@@ -251,10 +251,10 @@ const DebitFund = (props) => {
 
               <Modal.Footer>
                 <NavLink to="/">
-                  <Button variant="secondary">Close</Button>
+                  <Button variant="secondary">{t('Close')}</Button>
                 </NavLink>
                 <Button variant="primary" onClick={debitClickHandler}>
-                  Debit Fund
+                  {t('Debit Fund')}
                 </Button>
               </Modal.Footer>
             </Modal.Dialog>

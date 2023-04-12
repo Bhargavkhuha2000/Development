@@ -40,7 +40,6 @@ const AddField = () => {
   const deleteHandle = (i) => {
     const datas = [...data];
     datas.splice(i, 1);
-    // console.log('click');
     setData([...datas]);
     console.log(datas);
   };
@@ -82,21 +81,6 @@ const AddField = () => {
       setTotal(TotalData.toFixed(2));
       setIsClick(true);
     }
-    // datas.map((d) => {
-    //   d.Total = (d.Note * d.NumberOf).toFixed(2);
-    // });
-    // datas.sort((a, b) => {
-    //   return a.Note - b.Note;
-    // });
-    // console.log(datas);
-    // setData(datas);
-    // let TotalData = 0;
-    // datas.map((a) => {
-    //   return (TotalData = +TotalData + +a.Total);
-    // });
-    // console.log(TotalData);
-    // setTotal(TotalData.toFixed(2));
-    // setIsClick(true);
   };
   const GoForChange = () => {
     setChangeShow(true);
@@ -112,61 +96,62 @@ const AddField = () => {
       console.log([+TotalBill, +TotalGiven]);
       alert('Your bill is greater than given money');
     } else {
+      console.log(+Total, TotalBill, TotalGiven);
       const changes = (+TotalGiven - +TotalBill).toFixed(2);
       console.log(changes);
-      const datas = [...data];
-      let note = [];
-      let noOfNote = [];
-      datas.map((d) => {
-        note.push(+d.Note);
-        noOfNote.push(+d.NumberOf);
-      });
-      console.log(note);
-      console.log(noOfNote);
-      let chang = changes;
-      let finalnote = [];
-      for (let i = note.length - 1; i >= 0; i--) {
-        if (note[i] > 0) {
-          if (chang / note[i] >= noOfNote[i]) {
-            const n = note[i] * noOfNote[i];
-            finalnote.push({ Note: note[i], manyNote: +noOfNote[i] });
-            noOfNote[i] -= +noOfNote[i];
-            chang -= +n;
-          } else if (+chang / note[i] < +noOfNote[i]) {
-            console.log();
-            finalnote.push({
-              Note: note[i],
-              manyNote: +Math.floor(+chang / note[i]),
-            });
-            noOfNote[i] = +(noOfNote[i] - Math.floor(+chang / note[i])).toFixed(
-              2
-            );
-            chang = (+chang % note[i]).toFixed(2);
-          }
-        } else if (note[i] < 0) {
-          if (chang / note[i] >= noOfNote[i]) {
-            const n = (+note[i] * noOfNote[i]).toFixed(2);
-            finalnote.push({ Note: note[i], manyNote: +noOfNote[i] });
-            noOfNote[i] -= +noOfNote[i];
-            chang -= +n;
-          } else if ((+chang / note[i]).toFixed(2) < +noOfNote[i]) {
-            console.log();
-            finalnote.push({
-              Note: note[i],
-              manyNote: +(+chang / note[i]).toFixed(2),
-            });
-            noOfNote[i] = +(noOfNote[i] - chang / note[i]).toFixed(2);
-            chang = (+chang % note[i]).toFixed(2);
+      if (+Total < changes) {
+        alert('Fund is not available');
+      } else {
+        const datas = [...data];
+        let note = [];
+        let noOfNote = [];
+        datas.map((d) => {
+          note.push(+d.Note);
+          noOfNote.push(+d.NumberOf);
+        });
+        console.log(note);
+        console.log(noOfNote);
+        let chang = changes;
+        let finalnote = [];
+        for (let i = note.length - 1; i >= 0; i--) {
+          if (note[i] > 0) {
+            if (chang / note[i] >= noOfNote[i]) {
+              const n = note[i] * noOfNote[i];
+              finalnote.push({ Note: note[i], manyNote: +noOfNote[i] });
+              noOfNote[i] -= +noOfNote[i];
+              chang -= +n;
+            } else if (+chang / note[i] < +noOfNote[i]) {
+              console.log();
+              finalnote.push({
+                Note: note[i],
+                manyNote: +Math.floor(+chang / note[i]),
+              });
+              noOfNote[i] = +(
+                noOfNote[i] - Math.floor(+chang / note[i])
+              ).toFixed(2);
+              chang = (+chang % note[i]).toFixed(2);
+            }
+          } else if (note[i] < 0) {
+            if (chang / note[i] >= noOfNote[i]) {
+              const n = (+note[i] * noOfNote[i]).toFixed(2);
+              finalnote.push({ Note: note[i], manyNote: +noOfNote[i] });
+              noOfNote[i] -= +noOfNote[i];
+              chang -= +n;
+            } else if ((+chang / note[i]).toFixed(2) < +noOfNote[i]) {
+              console.log();
+              finalnote.push({
+                Note: note[i],
+                manyNote: +(+chang / note[i]).toFixed(2),
+              });
+              noOfNote[i] = +(noOfNote[i] - chang / note[i]).toFixed(2);
+              chang = (+chang % note[i]).toFixed(2);
+            }
           }
         }
-      }
-      console.log(noOfNote);
-      console.log(finalnote);
-      if (+chang > 0) {
-        console.log(note[0]);
-        if (+chang < note[0]) {
-          alert('fund not available line 167');
-        } else {
+        console.log(noOfNote);
+        console.log(finalnote);
+        if (+chang > 0) {
+          console.log(note[0]);
           console.log(chang);
           for (let i = 0; i < note.length; i++) {
             let temp = 0;
@@ -183,6 +168,9 @@ const AddField = () => {
                 }
               }
             });
+            if (isFound === true && i === note.length - 1) {
+              alert('Exchange not available');
+            }
             if (isFound === true) {
               continue;
             }
@@ -232,7 +220,6 @@ const AddField = () => {
                   temp -= Math.floor(manyNote * Note);
                   finalnote[findindex] = { Note: Note, manyNote: manyNote };
                   if (temp === 0) {
-                    // console.log('if sucess');
                     index = findindex;
                     isComplete = true;
                     break;
@@ -243,7 +230,6 @@ const AddField = () => {
                   temp = Math.floor(+temp % Note);
                   finalnote[findindex] = { Note: Note, manyNote: manyNote };
                   if (temp === 0) {
-                    // console.log('ELSE sucess');
                     index = findindex;
                     isComplete = true;
                     break;
@@ -273,6 +259,8 @@ const AddField = () => {
                 }
               }
             }
+            console.log('length : ', note.length);
+            console.log('i : ', i);
             if (isComplete === false && i === note.length - 1) {
               alert('Exchange is not available');
             }
@@ -285,8 +273,6 @@ const AddField = () => {
               }
               if (index === finalnote.length - 1) {
               }
-              // console.log('s');
-              // console.log(finalnote);
               let i = 0;
               let TotalData = 0;
               datas.map((d) => {
@@ -305,29 +291,29 @@ const AddField = () => {
               break;
             }
           }
+        } else if (+chang === 0) {
+          console.log(`chang ${chang}, noOfNote ${noOfNote} `);
+          let i = 0;
+          let TotalData = 0;
+          datas.map((d) => {
+            d.NumberOf = noOfNote[i];
+            d.Total = (d.Note * d.NumberOf).toFixed(2);
+            TotalData += +d.Total;
+            i++;
+          });
+
+          console.log(datas);
+          setData(datas);
+          setChange(finalnote);
+          setTotal(TotalData.toFixed(2));
+          setTotalBill('');
+          setTotalGiven('');
+          setChangeShow(false);
+          setIsFinalShow(true);
+          console.log(finalnote);
+        } else {
+          alert('Fund not available');
         }
-      } else if (+chang === 0) {
-        console.log(`chang ${chang}, noOfNote ${noOfNote} `);
-        let i = 0;
-        let TotalData = 0;
-        datas.map((d) => {
-          d.NumberOf = noOfNote[i];
-          d.Total = (d.Note * d.NumberOf).toFixed(2);
-          TotalData += +d.Total;
-          i++;
-        });
-        // TotalData.toFixed();
-        console.log(datas);
-        setData(datas);
-        setChange(finalnote);
-        setTotal(TotalData.toFixed(2));
-        setTotalBill('');
-        setTotalGiven('');
-        setChangeShow(false);
-        setIsFinalShow(true);
-        console.log(finalnote);
-      } else {
-        alert('Fund not available');
       }
     }
   };
