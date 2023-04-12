@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
+
 import { Row, Col } from 'react-bootstrap';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import validator from 'validator';
 import { NavLink, useNavigate } from 'react-router-dom';
-const Login = () => {
+const Login = (props) => {
+  const { t } = props;
   const redirectHome = useNavigate();
 
   const [email, setemail] = useState('');
@@ -83,7 +85,7 @@ const Login = () => {
           >
             <Modal.Dialog>
               <Modal.Header>
-                <Modal.Title>Login</Modal.Title>
+                <Modal.Title>{t('Login')}</Modal.Title>
               </Modal.Header>
 
               <Modal.Body>
@@ -97,8 +99,8 @@ const Login = () => {
                       value={loginSelecter}
                       onChange={(e) => setLoginSelecter(e.target.value)}
                     >
-                      <option value="Email">Email</option>
-                      <option value="UserName">User Name</option>
+                      <option value="Email">{t('Email')}</option>
+                      <option value="UserName">{t('User Name')}</option>
                     </Form.Select>
                   </Form.Group>
                   <Form.Group
@@ -124,7 +126,7 @@ const Login = () => {
                     className="mb-3"
                     controlId="exampleForm.ControlInput1"
                   >
-                    <Form.Label>Password</Form.Label>
+                    <Form.Label>{t('Password')}</Form.Label>
                     <Form.Control
                       type="password"
                       value={password}
@@ -146,15 +148,15 @@ const Login = () => {
 
               <Modal.Footer>
                 <NavLink to="/">
-                  <Button variant="secondary">Close</Button>
+                  <Button variant="secondary">{t('Close')}</Button>
                 </NavLink>
                 <Button variant="primary" onClick={loginHandler}>
-                  Login
+                  {t('Login')}
                 </Button>
               </Modal.Footer>
               <p align="center">
-                Don't Have Account?
-                <NavLink to="/Register">Register Now</NavLink>
+                {t("Don't Have Account")}?
+                <NavLink to="/Register">{t('Register Now')}</NavLink>
               </p>
             </Modal.Dialog>
             <p></p>

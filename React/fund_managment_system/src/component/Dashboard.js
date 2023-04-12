@@ -9,7 +9,7 @@ import { BsFillPencilFill } from 'react-icons/bs';
 import AdminDashboard from './AdminDashboard';
 
 const Dashboard = (props) => {
-  const { fundData } = props;
+  const { fundData, t } = props;
   const [updateText, setUpdateText] = useState('');
   const getLoginData = JSON.parse(localStorage.getItem('userLogin'));
 
@@ -124,10 +124,10 @@ const Dashboard = (props) => {
   const firstData = getLoginData[0].data[0].id;
   return (
     <div style={{ marginTop: '25px', overflow: 'scroll', height: '800px' }}>
-      <h1 align="center">DashBoard</h1>
+      <h1 align="center">{t('Dashboard')}</h1>
       {getLoginData[0].user === 'User' && getLoginData && (
         <h4 style={{ marginLeft: '270px' }}>
-          Available Balance :{getLoginData[0].balance}
+          {t('Available Balance')} :{getLoginData[0].balance}
         </h4>
       )}
       <Row>
@@ -140,13 +140,13 @@ const Dashboard = (props) => {
                     <thead className="thead-dark">
                       <tr>
                         <th>#</th>
-                        <th>User Name</th>
-                        <th>Current Balance</th>
-                        <th>Credit/Debit</th>
-                        <th>Credit/Debit Amount</th>
-                        <th>Date</th>
-                        <th>Final Balance</th>
-                        <th>Update | Delete</th>
+                        <th>{t('User Name')}</th>
+                        <th>{t('Current Balance')}</th>
+                        <th>{t('Credit/Debit')}</th>
+                        <th>{t('Credit/Debit Amount')}</th>
+                        <th>{t('Date')}</th>
+                        <th>{t('Final Balance')}</th>
+                        <th>{t('Update | Delete')}</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -199,13 +199,13 @@ const Dashboard = (props) => {
           <table className="table">
             <thead className="thead-dark">
               <tr>
-                <th>User Name</th>
-                <th>Current Balance</th>
-                <th>Credit/Debit</th>
-                <th>Credit/Debit Amount</th>
-                <th>Date</th>
-                <th>Final Balance</th>
-                <th>Update</th>
+                <th>{t('User Name')}</th>
+                <th>{t('Current Balance')}</th>
+                <th>{t('Credit/Debit')}</th>
+                <th>{t('Credit/Debit Amount')}</th>
+                <th>{t('Date')}</th>
+                <th>{t('Final Balance')}</th>
+                <th>{t('Update')}</th>
               </tr>
             </thead>
             <tr>
@@ -226,9 +226,9 @@ const Dashboard = (props) => {
               <td>{updateText.FinalBalance}</td>
               <td>
                 <button onClick={() => updateHandle(+updateText.id)}>
-                  update
+                  {t('Update')}
                 </button>
-                <button onClick={() => setIsUpdate(false)}>Close</button>
+                <button onClick={() => setIsUpdate(false)}>{t('Close')}</button>
               </td>
             </tr>
           </table>

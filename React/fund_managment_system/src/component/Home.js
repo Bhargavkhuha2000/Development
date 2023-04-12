@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
@@ -11,9 +12,14 @@ import './SideNavBar.css';
 import { NavLink } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
-const Home = () => {
+const Home = (props) => {
+  const { t } = props;
   const nav = useNavigate();
   const getLoginData = JSON.parse(localStorage.getItem('userLogin'));
+  const { i18n } = useTranslation();
+  function changeLanguage(e) {
+    i18n.changeLanguage(e.target.value);
+  }
   const loginHandler = (e) => {
     e.preventDefault();
     nav('./Login');
@@ -36,7 +42,7 @@ const Home = () => {
                     align="center"
                     style={{ color: 'white' }}
                   >
-                    Welcome {getLoginData[0].name}
+                    {t('Welcome')} {getLoginData[0].name}
                   </Navbar.Brand>
                 )}
 
@@ -46,7 +52,7 @@ const Home = () => {
                     align="center"
                     style={{ color: 'white' }}
                   >
-                    Fund Manage System
+                    {t('Fund Manage System')}
                   </Navbar.Brand>
                 )}
                 <Navbar.Toggle aria-controls="navbarScroll" />
@@ -59,15 +65,21 @@ const Home = () => {
                   <Form className="d-flex">
                     {!getLoginData && (
                       <Button variant="primary" onClick={loginHandler}>
-                        Login Now
+                        {t('Login Now')}
                       </Button>
                     )}
 
                     {getLoginData && (
                       <Button variant="primary" onClick={logoutHandle}>
-                        Logout
+                        {t('Logout')}
                       </Button>
                     )}
+                    <label style={{ color: 'white' }}>Language</label>
+                    <select onChange={changeLanguage}>
+                      <option value="en">English</option>
+                      <option value="es">español</option>
+                      <option value="eh">हिंदी</option>
+                    </select>
                   </Form>
                 </Navbar.Collapse>
               </Container>
@@ -79,9 +91,9 @@ const Home = () => {
             <div className="sidebar">
               {getLoginData && (
                 <>
-                  <NavLink to="/DashBoard">Dashboard</NavLink>
-                  <NavLink to="/CreditAmount">Credit Fund</NavLink>
-                  <NavLink to="/DebitFund">Debit Fund</NavLink>
+                  <NavLink to="/DashBoard">{t('Dashboard')}</NavLink>
+                  <NavLink to="/CreditAmount">{t('Credit Fund')}</NavLink>
+                  <NavLink to="/DebitFund">{t('Debit Fund')}</NavLink>
                 </>
               )}
             </div>
@@ -93,7 +105,7 @@ const Home = () => {
               <div className="footer">
                 <footer className="page-footer font-small blue">
                   <br />
-                  <h5>© 2022 Prominentpixel</h5>
+                  <h5>© {t('2022 Prominentpixel')}</h5>
                 </footer>
               </div>
             </Container>

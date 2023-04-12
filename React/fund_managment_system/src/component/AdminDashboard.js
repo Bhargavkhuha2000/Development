@@ -3,7 +3,8 @@ import { BsFillTrashFill } from 'react-icons/bs';
 import { BsFillPencilFill } from 'react-icons/bs';
 import Button from 'react-bootstrap/Button';
 
-const AdminDashboard = () => {
+const AdminDashboard = (props) => {
+  const { t } = props;
   const getLoginData = JSON.parse(localStorage.getItem('userLogin'));
   const AdminData = JSON.parse(localStorage.getItem('data'));
   const getRegData = JSON.parse(localStorage.getItem('regData'));
@@ -129,17 +130,19 @@ const AdminDashboard = () => {
     <div style={{ marginTop: '25px', marginLeft: '270px' }}>
       {AdminData.map((d) => (
         <>
-          <h4>User Name : {d.userName}</h4>
+          <h4>
+            {t('User Name')} : {d.userName}
+          </h4>
           <h4>Balance : {d.balance}</h4>
           <table className="table">
             <thead className="thead-dark">
               <tr>
-                <th>Current Balance</th>
-                <th>Credit/Debit</th>
-                <th>Credit/Debit Amount</th>
-                <th>Date</th>
-                <th>FinalBalance</th>
-                <th>Update|Delete</th>
+                <th>{t('Current Balance')}</th>
+                <th>{t('Credit/Debit')}</th>
+                <th>{t('Credit/Debit Amount')}</th>
+                <th>{t('Date')}</th>
+                <th>{t('FinalBalance')}</th>
+                <th>{t('Update|Delete')}</th>
               </tr>
             </thead>
             <tbody>
@@ -183,18 +186,18 @@ const AdminDashboard = () => {
       {isUpdate && (
         <>
           <h2 align="center" style={{ color: 'green' }}>
-            Update
+            {t('Update')}
           </h2>
           <table className="table">
             <thead className="thead-dark">
               <tr>
-                <th>User Name</th>
-                <th>Current Balance</th>
-                <th>Credit/Debit</th>
-                <th>Credit/Debit Amount</th>
-                <th>Date</th>
-                <th>Final Balance</th>
-                <th>Update</th>
+                <th>{t('User Name')}</th>
+                <th>{t('Current Balance')}</th>
+                <th>{t('Credit/Debit')}</th>
+                <th>{t('Credit/Debit Amount')}</th>
+                <th>{t('Date')}</th>
+                <th>{t('Final Balance')}</th>
+                <th>{t('Update')}</th>
               </tr>
             </thead>
             <tr>
@@ -215,9 +218,9 @@ const AdminDashboard = () => {
               <td>{updateText.FinalBalance}</td>
               <td>
                 <button onClick={() => updateHandle(+updateText.id)}>
-                  update
+                {t("Update")}
                 </button>
-                <button onClick={() => setIsUpdate(false)}>Close</button>
+                <button onClick={() => setIsUpdate(false)}>{t("Close")}</button>
               </td>
             </tr>
           </table>
