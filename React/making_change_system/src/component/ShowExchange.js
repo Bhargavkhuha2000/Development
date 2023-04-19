@@ -5,14 +5,14 @@ const ShowExchange = (props) => {
   let data = [];
   data = change
     ? change.filter((d) => {
-        if (d.manyNote !== 0) {
+        if (d.noOfNote !== 0) {
           return d;
         }
       })
     : [];
   let total = 0;
   data.map((d) => {
-    total += d.manyNote * d.Note;
+    total += d.noOfNote * d.note;
   });
 
   let i = 0;
@@ -41,11 +41,11 @@ const ShowExchange = (props) => {
               {data.map((d, index) => (
                 <tr key={index}>
                   <td>{++i}</td>
-                  <td>{d.Note}</td>
+                  <td>{d.note}</td>
                   <td>X</td>
-                  <td>{d.manyNote}</td>
+                  <td>{d.noOfNote}</td>
                   <td>=</td>
-                  <td>{d.Note * d.manyNote}</td>
+                  <td>{d.note * d.noOfNote}</td>
                 </tr>
               ))}
               <tr>

@@ -17,10 +17,10 @@ function App() {
   const [data, setData] = useState([
     {
       id: 0,
-      NoteName: '',
-      Note: '',
-      NumberOf: '',
-      Total: '',
+      noteName: '',
+      note: '',
+      numberOfNote: '',
+      total: '',
     },
   ]);
   return (

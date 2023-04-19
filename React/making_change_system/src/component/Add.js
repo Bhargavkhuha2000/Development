@@ -8,12 +8,15 @@ const Add = (props) => {
   const nav = useNavigate();
   const handleChange = (e, i) => {
     const { name, value } = e.target;
+
     const onChangeVal = [...data];
-    if (name === 'Total' || name === 'Note') {
+    if (name === 'total' || name === 'note') {
       onChangeVal[i][name] = +value;
-    } else if (name === 'NoteName') {
+    } else if (name === 'noteName') {
       onChangeVal[i][name] = value;
     }
+    console.log(onChangeVal);
+
     setData(onChangeVal);
   };
   const deleteHandle = (i) => {
@@ -25,36 +28,66 @@ const Add = (props) => {
     e.preventDefault();
     setData([
       ...data,
-      { id: data.length, NoteName: '', Note: '', NumberOf: '', Total: '' },
+      { id: data.length, noteName: '', note: '', numberOfNote: '', total: '' },
     ]);
   };
   let isFound = false;
   const saveDataCheck = (datas) => {
     for (const element of datas) {
-      if (element.Total % element.Note === 0) {
-        element.Total = +element.Total;
-        element.Note = +element.Note;
-        element.NumberOf = element.Total / element.Note;
-      } else if (
-        element.NoteName === '' ||
-        element.Note === '' ||
-        element.Total === ''
-      ) {
-        alert(`Empty field is not allow`);
-        isFound = true;
-        break;
-      } else if (element.Total % element.Note !== 0) {
-        element.Total = 0;
-        element.NumberOf = 0;
-        alert(`${element.Note} notes Total is wrong`);
-        isFound = true;
-        break;
+      // console.log((element.total % element.note).toFixed(2));
+      const floorValue = Math.floor(element.note);
+      // console.log(Math.floor(element.note), element.note);
+      if (floorValue === +element.Note) {
+        console.log(floorValue > element.Note);
+        if ((element.total % element.note).toFixed(2) === 0) {
+          element.total = +element.total;
+          element.note = +element.note;
+          element.numberOfNote = element.total / element.note;
+        } else if (
+          element.noteName === '' ||
+          element.note === '' ||
+          element.total === ''
+        ) {
+          alert(`Empty field is not allow`);
+          isFound = true;
+          break;
+        } else if ((element.total % element.note).toFixed(2) !== 0) {
+          element.total = 0;
+          element.numberOfNote = 0;
+          alert(`${element.note} notes Total is wrong`);
+          isFound = true;
+          break;
+        }
+      } else if (floorValue < element.note) {
+        const note = element.note * 100;
+        const total = Math.ceil(element.total * 100);
+        console.log('total : ', total);
+        console.log(note, total);
+        if (
+          element.noteName === '' ||
+          element.note === '' ||
+          element.total === ''
+        ) {
+          alert(`Empty field is not allow`);
+          isFound = true;
+          break;
+        } else if (total % note !== 0) {
+          element.total = 0;
+          element.numberOfNote = 0;
+          alert(`${element.note} notes Total is wrong`);
+          console.log(total / note);
+          isFound = true;
+        } else if (total % note === 0) {
+          element.total = +element.total;
+          element.note = +element.note;
+          element.numberOfNote = total / note;
+        }
       }
     }
   };
   const sortSaveData = (datas) => {
     datas.sort((a, b) => {
-      return a.Note - b.Note;
+      return a.note - b.note;
     });
   };
 
@@ -65,12 +98,12 @@ const Add = (props) => {
     if (isFound === false) {
       sortSaveData(datas);
       setData(datas);
-      let totalData = 0;
+      let totalFinal = 0;
       datas.map((a) => {
-        return (totalData += a.Total);
+        return (totalFinal += a.total);
       });
 
-      setTotal(totalData);
+      setTotal(totalFinal.toFixed(2));
       nav('/Show');
     }
   };
@@ -93,27 +126,27 @@ const Add = (props) => {
                 <td>
                   <input
                     type="text"
-                    name="NoteName"
+                    name="noteName"
                     className="input"
-                    value={d.NoteName}
+                    value={d.noteName}
                     onChange={(e) => handleChange(e, i)}
                   />
                 </td>
                 <td>
                   <input
                     type="number"
-                    name="Note"
+                    name="note"
                     className="input"
-                    value={d.Note}
+                    value={d.note}
                     onChange={(e) => handleChange(e, i)}
                   />
                 </td>
                 <td>
                   <input
                     type="number"
-                    name="Total"
+                    name="total"
                     className="input"
-                    value={d.Total}
+                    value={d.total}
                     onChange={(e) => handleChange(e, i)}
                   />
                 </td>

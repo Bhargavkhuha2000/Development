@@ -22,12 +22,12 @@ const Show = (props) => {
           {data.map((d) => (
             <tr>
               <td>{++i}</td>
-              <td>{d.NoteName}</td>
-              <td>{d.Note}</td>
+              <td>{d.noteName}</td>
+              <td>{d.note}</td>
               <td>X</td>
-              <td>{d.NumberOf}</td>
+              <td>{d.numberOfNote}</td>
               <td>=</td>
-              <td>{d.Total}</td>
+              <td>{d.total}</td>
             </tr>
           ))}
           <tr>
