@@ -33,17 +33,8 @@ const Exchange = (props) => {
     numberOfNote,
     totalReturnAmount
   ) => {
-    let floorValue = Math.ceil(totalReturnAmount);
-    let minNote;
-    let combinations;
-    if (floorValue === totalReturnAmount) {
-      minNote = Array(totalReturnAmount + 1).fill(Infinity);
-      combinations = Array(totalReturnAmount + 1).fill(null);
-    }
-    if (floorValue > totalReturnAmount) {
-      minNote = Array(floorValue).fill(Infinity);
-      combinations = Array(floorValue).fill(null);
-    }
+    let minNote = Array(totalReturnAmount + 1).fill(Infinity);
+    let combinations = Array(totalReturnAmount + 1).fill(null);
 
     minNote[0] = 0;
     for (let i = 0; i < note.length; i++) {

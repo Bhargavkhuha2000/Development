@@ -33,55 +33,77 @@ const Add = (props) => {
   };
   let isFound = false;
   const saveDataCheck = (datas) => {
+    // for (const element of datas) {
+    //   // console.log((element.total % element.note).toFixed(2));
+    //   const floorValue = Math.floor(element.note);
+    //   // console.log(Math.floor(element.note), element.note);
+    //   console.log(floorValue === +element.note);
+    //   if (floorValue === +element.note) {
+    //     console.log(floorValue > element.note);
+    //     if ((+element.total % +element.note).toFixed(2) === 0) {
+    //       element.total = +element.total;
+    //       element.note = +element.note;
+    //       element.numberOfNote = +element.total / +element.note;
+    //     } else if (
+    //       element.noteName === '' ||
+    //       element.note === '' ||
+    //       element.total === ''
+    //     ) {
+    //       alert(`Empty field is not allow`);
+    //       isFound = true;
+    //       break;
+    //     } else if (+element.total % +element.note !== 0) {
+    //       element.total = 0;
+    //       element.numberOfNote = 0;
+    //       alert(`${element.note} notes Total is wrong`);
+    //       isFound = true;
+    //       break;
+    //     }
+    //   } else if (floorValue < element.note) {
+    //     const note = element.note * 100;
+    //     const total = Math.ceil(element.total * 100);
+    //     console.log('total : ', total);
+    //     console.log(note, total);
+    //     if (
+    //       element.noteName === '' ||
+    //       element.note === '' ||
+    //       element.total === ''
+    //     ) {
+    //       alert(`Empty field is not allow`);
+    //       isFound = true;
+    //       break;
+    //     } else if (total % note !== 0) {
+    //       element.total = 0;
+    //       element.numberOfNote = 0;
+    //       alert(`${element.note} notes Total is wrong`);
+    //       console.log(total / note);
+    //       isFound = true;
+    //     } else if (total % note === 0) {
+    //       element.total = +element.total;
+    //       element.note = +element.note;
+    //       element.numberOfNote = total / note;
+    //     }
+    //   }
+    // }
     for (const element of datas) {
-      // console.log((element.total % element.note).toFixed(2));
-      const floorValue = Math.floor(element.note);
-      // console.log(Math.floor(element.note), element.note);
-      if (floorValue === +element.Note) {
-        console.log(floorValue > element.Note);
-        if ((element.total % element.note).toFixed(2) === 0) {
-          element.total = +element.total;
-          element.note = +element.note;
-          element.numberOfNote = element.total / element.note;
-        } else if (
-          element.noteName === '' ||
-          element.note === '' ||
-          element.total === ''
-        ) {
-          alert(`Empty field is not allow`);
-          isFound = true;
-          break;
-        } else if ((element.total % element.note).toFixed(2) !== 0) {
-          element.total = 0;
-          element.numberOfNote = 0;
-          alert(`${element.note} notes Total is wrong`);
-          isFound = true;
-          break;
-        }
-      } else if (floorValue < element.note) {
-        const note = element.note * 100;
-        const total = Math.ceil(element.total * 100);
-        console.log('total : ', total);
-        console.log(note, total);
-        if (
-          element.noteName === '' ||
-          element.note === '' ||
-          element.total === ''
-        ) {
-          alert(`Empty field is not allow`);
-          isFound = true;
-          break;
-        } else if (total % note !== 0) {
-          element.total = 0;
-          element.numberOfNote = 0;
-          alert(`${element.note} notes Total is wrong`);
-          console.log(total / note);
-          isFound = true;
-        } else if (total % note === 0) {
-          element.total = +element.total;
-          element.note = +element.note;
-          element.numberOfNote = total / note;
-        }
+      if (element.total % element.note === 0) {
+        element.total = +element.total;
+        element.note = +element.note;
+        element.numberOfNote = element.total / element.note;
+      } else if (
+        element.noteName === '' ||
+        element.note === '' ||
+        element.total === ''
+      ) {
+        alert(`Empty field is not allow`);
+        isFound = true;
+        break;
+      } else if (element.total % element.note !== 0) {
+        element.total = 0;
+        element.numberOfNote = 0;
+        alert(`${element.note} notes Total is wrong`);
+        isFound = true;
+        break;
       }
     }
   };
@@ -104,6 +126,7 @@ const Add = (props) => {
       });
 
       setTotal(totalFinal.toFixed(2));
+      console.log(datas);
       nav('/Show');
     }
   };
